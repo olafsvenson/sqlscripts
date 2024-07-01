@@ -1,0 +1,5 @@
+https://cloud.google.com/community/tutorials/setting-up-postgres-hot-standby
+
+https://www.cherryservers.com/blog/how-to-set-up-postgresql-database-replication
+
+https://kinsta.com/blog/postgresql-replication/

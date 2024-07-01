@@ -1,0 +1,433 @@
+https://www.academia.edu/35538874/M_A_N_N_I_N_G
+
+mongod --dbpath /data/db --bind_ip 127.0.0.1 --port 27000 --storageEngine wiredTiger --directoryperdb
+
+var status = db.serverStatus()
+status['storageEngine']
+
+db.runCommand( { serverStatus: 1 } )
+
+-- список баз
+show dbs
+
+use mydb
+for(var x=0; x<100; x++){
+db.mycol.insert({
+age:(Math.round(Math.random()*100)%20)
+})
+}
+
+for(var x=0; x<20000; x++){
+db.mycol.insert({age:(Math.round(Math.random()*100)%20)});
+db.mycol.findAndModify({query: {age:
+(Math.round(Math.random()*100)%20)}, update:{$inc: {age: 2}}});
+db.mycol.remove({age:(Math.round(Math.random()*100)%20)});
+}
+
+db.mycol.count()
+
+-- бекап всех баз
+mongodump -o C:\MongoDb\backup --host localhost:27017
+
+-- restore
+mongorestore C:\MongoDb\backup
+
+-- конфиг файл mongod.conf
+
+storage:
+dbPath: /data/db
+engine: wiredTiger
+directoryPerDB: true
+net:
+port: 27000
+bindIp: 127.0.0.1
+ssl:
+mode: requireSSL
+PEMKeyFile: /data/mongo-secure.pem
+
+-- запуск с конфиг файлов
+mongodb/bin/mongod --config /data/mongod.conf
+
+-- импорт csv
+mongoimport /headerline /ignoreBlanks /type:csv /d ReplDb /c mockdata /h localhost:27018 /file:chapter_2_mock_data.csv
+
+mongodump --db TestReplDb --host 127.0.0.1 --port 37018 --out D:\Mongo
+
+
+mongoexport --db testFrom --port portFrom --username userFrom --password passwordFrom --collection yourCollection --out test.json
+mongoimport --db testTo --port portTo --username userTo --password passwordTo --collection yourCollection --file test.json
+
+
+
+-- текущие запросы
+db.currentOp() 
+
+-- Active Operations on a Specific Database
+db.currentOp(
+   {
+     "active" : true,
+     "secs_running" : { "$gt" : 3 },
+     "ns" : /^TestReplDb\./
+   }
+)
+
+-- поиск создания индексов
+db.currentOp(
+    {
+      $or: [
+        { op: "command", "query.createIndexes": { $exists: true } },
+        { op: "none", ns: /\.system\.indexes\b/ }
+      ]
+    }
+)
+
+db.killOp(opid)
+
+-- индексы
+db.mockdata.createIndex({'city': 1})
+
+db.mockdata.find({city:'Singapore'}).explain("executionStats")
+
+
+db.mockdata.getIndexes()
+
+db.mockdata.dropIndex('city_1')
+db.mockdata.createIndex({'city':1}, {name: 'city_index'})
+
+db.mockdata.reIndex('city_index')
+
+stats = db.mockdata.stats()
+stats["totalIndexSize"]
+
+db.mockdata.createIndex({'city': 1, 'first_name': 1},{name: 'city_first_name_index'},{background:1})
+
+-- SPARCE index
+-- MongoDB allows you to create an index on fields that may not exist in all documents, in a given collection.
+
+db.mockdata.createIndex({language:1}, {sparse: true})
+
+-- partial index (фильтрованные)
+-- MongoDB is instructed to create an index on first_name only on documents which have the field language present
+db.mockdata.createIndex({first_name:1},{partialFilterExpression: { language: {$exists: true}}})
+
+-- РЕПЛИКАЦИЯ
+mongod --dbpath C:\MongoDb\server1\db --replSet MyReplicaSet --directoryperdb --logpath C:\MongoDb\server1\logs\server1.log
+mongod --dbpath C:\MongoDb\server2\db --replSet MyReplicaSet --directoryperdb --port 27018 --logpath C:\MongoDb\server2\logs\server2.log
+mongod --dbpath C:\MongoDb\server3\db --replSet MyReplicaSet --directoryperdb --port 27019 --logpath C:\MongoDb\server3\logs\server3.log
+
+mongod --dbpath C:\MongoDb\arbiter\db --replSet MyReplicaSet --directoryperdb --port 30000
+
+-- статус репликации
+rs.status()
+
+
+
+
+rs.isMaster()
+db.serverStatus()['repl']
+
+-- oplog information
+rs.printReplicationInfo()
+
+
+-- инициализация репликации
+use local
+rs.initiate()
+
+(2) вариант
+var conf = {
+  "_id" : "rs0",
+  "members" : [
+    {
+	"_id" : 0,
+	"host" : "127.0.0.1:27017",
+	"priority" : 5
+    },
+    {
+	"_id" : 1,
+	"host" : "127.0.0.1:27018",
+	"priority" : 3
+    },
+    {
+    	"_id" : 2,
+	"host" : "127.0.0.1:27019",
+	"arbiterOnly": true
+
+
+    }
+  ],
+	settings: { 
+			getLastErrorModes: 
+			{ 
+				multiDC: { dc: 2 } , 
+				multiRack: { rackNY: 2 } 
+			}, 
+		  }
+}
+rs.initiate(conf)
+
+
+
+-- добавление новой ноды (выполнять на PRIMARY)
+rs.add({host:'localhost:27018', priority: 1})
+rs.add('localhost:27019')
+
+-- удаление ноды (выполнять на PRIMARY)
+rs.remove('localhost:27019')
+
+-- добавление арбитра
+rs.addArb('localhost:30000')
+
+-- переключить реплику
+rs.stepDown()
+
+
+Сбрасывание PRIMARY. Смена первичного узла и переназначение приоритетов
+
+rs.stepDown(60,40)
+60 секунд — время, в течение которого сервер, с которого запущено выполнение команды, не может стать Primary; 40 секунд — время перевыборов нового Primary.
+
+db.adminCommand({replSetStepDown: 30, force: 1})
+30 секунд — время отключения Primary и перевыборы. Выполнение команды допустимо с любого из серверов mongoDB.
+
+rs.stepDown(60)
+Узел, с которого запущена команда, в течение 60 секунд не сможет стать Primary.
+
+
+
+-- исключить из выбора доступных реплик
+rs.freeze(120)
+
+
+conf = rs.conf()
+conf['members'][0].priority = 2
+conf['members'][1].priority = 2
+conf['members'][3].priority = 5
+rs.reconfig(conf)
+
+rs.conf()['members']
+
+-- Проверка состоянии репликации с точки зрения Primary-сервера (на PRIMARY)
+rs.printReplicationInfo()
+
+-- Проверка отставания репликации (на SECONDARY)
+rs.printSlaveReplicationInfo()
+
+
+Как определяется отставание/ между первичной и вторичной нодами?
+MongoDВ знает временную метку последней записи в oplog на мастере
+
+
+oplog last event time: Wed Aug 22 2018 18:48:06 GMT+0100 (BST)
+1
+oplog last event time: Wed Aug 22 2018 18:48:06 GMT+0100 (BST)
+и сверяет ее с временной меткой oplog на вторичном сервере
+
+
+syncedTo: Wed Aug 22 2018 18:48:06 GMT+0100 (BST)
+1
+syncedTo: Wed Aug 22 2018 18:48:06 GMT+0100 (BST)
+ 
+-- Adding Tags to a Set Replica
+conf = rs.conf()
+conf.members[0].tags = { "dc": "NYK", "use": "production"  }
+conf.members[1].tags = { "dc": "LON", "use": "reporting"  }
+conf.members[2].tags = { "use": "production"  }
+rs.reconfig(conf)
+
+-- Поиск команды в логе транзакций (изменения объекта db1.col1)
+db.oplog.rs.find({ns:"db1.col1"})
+
+-- Поиск последней записи в oplog
+db.oplog.rs.find().sort({$natural: -1}) .limit(1)
+
+-- изменение размера oplog
+db.database({replSetResizeOplog:1, size: 16384})
+
+-- установка w:majority
+cfg = rs.conf()
+cfg.settings.getLastErrorDefaults = { w: "majority", wtimeout: 5000 }
+rs.reconfig(cfg)
+
+cfg = rs.conf()
+printjson(cfg)
+
+-- profiler
+
+-- To get current profiling level.
+db.getProfilingLevel()
+
+-- To check current profiling status
+db.getProfilingStatus()
+
+-- To set profiling level
+-- Level 0	Profiler will not log any data
+-- Level 1	Profiler will log only slow operations above some threshold
+-- Level 2	Profiler will log all the operations
+
+db.setProfilingLevel(1, 40)
+
+--Most useful query is to sort all the documents by millis to get the top 10 slow queries.
+db.system.profile.find().sort({millis:-1}).limit(10).pretty();
+
+--Find all queries which are taking more than 30 milliseconds to execute
+db.system.profile.find({millis:{$gt:30}}).pretty()
+
+-- Find top 10 slowest aggregation/command queries
+db.system.profile.find({op: {$eq: “command” }}).sort({millis:-1}).limit(10).pretty();
+
+-- Find all the operations for which some documents were moved
+db.system.profile.find({moved:true}).pretty()
+
+-- Find queries which are performing large scans on the database
+db.system.profile.find({docsExamined:{$gt:10000}}).pretty()
+
+-- Find maximum and average time taken by each type of operations using aggregation
+
+db.system.profile.aggregate(
+{ $group : { 
+   _id :"$op", 
+   count:{$sum:1},
+   "max_time":{$max:"$millis"},
+   "avg_time":{$avg:"$millis"}
+}}).pretty()
+
+-- Find maximum and average time taken by queries in each database using aggregation
+
+db.system.profile.aggregate(
+{ $group : {
+  _id :"$ns",
+  count:{$sum:1}, 
+  "max_time":{$max:"$millis"}, 
+  "avg_time":{$avg:"$millis"}  
+}}.pretty()
+
+
+
+db.movieDetails.find({"awards.wins": 2, "awards.nominations": 2}).count()
+
+like query
+db.tag.find({name:/^term/})
+
+sort query
+1 for asc
+-1 for desc
+db.tag.find().sort({username:-1,age:1})
+
+limit query
+db.tag.find().limit(10)
+
+{cast: {$in: ["Jack Nicholson", "John Huston"]}, viewerRating: {$gt: 7}, mpaaRating: "R"
+
+
+
+
+--- OPLOG
+
+Querying the oplog after connected to a replica set:
+
+use local
+db.oplog.rs.find()
+Getting information about the oplog. Remember the oplog is a capped collection, meaning it can grow to a pre-configured size before it starts 
+to overwrite the oldest entries with newer ones. The below will determine whether a collection is capped, what the size is, and what the max size is.
+
+Storing oplog stats as a variable called stats:
+
+var stats = db.oplog.rs.stats()
+Verifying that this collection is capped (it will grow to a pre-configured size before it starts to overwrite the oldest entries with newer ones):
+
+stats.capped
+Getting current size of the oplog:
+
+stats.size
+Getting size limit of the oplog:
+
+stats.maxSize
+Getting current oplog data (including first and last event times, and configured oplog size):
+
+rs.printReplicationInfo()
+---- END OPLOG
+
+--- EXAMPLE #1
+
+Storing replica set configuration as a variable cfg:
+
+cfg = rs.conf()
+Setting the priority of a node to 0, so it cannot become primary (making the node "passive"):
+
+cfg.members[2].priority = 0
+
+Updating our replica set to use the new configuration cfg:
+rs.reconfig(cfg)
+
+Checking the new topology of our set:
+rs.isMaster()
+
+Forcing an election in this replica set (although in this case, we rigged the election so only one node could become primary):
+rs.stepDown()
+
+Checking the topology of our set after the election:
+rs.isMaster()
+---- END EXAMPLE #1
+
+
+All nodes have an equal chance to become primary.
+Priority and recency of a node's oplog dictates which nodes are more likely to become primary.
+
+
+По умолчанию запросы на чтение не разрешены на Secondary(для избежания проблем с получением клиентами устаревших данных)
+Разрешим Secondary-реплике обрабатывать запросы на чтение.
+Это разрешение будет действовать до окончания текущей mongo-shell-сессии(т.е. после отключения/выхода с mongo-сеанса значение снова станет дефолтным — запрещающим)
+
+rs.slaveOk(true)
+
+      rs.status()                                { replSetGetStatus : 1 } checks repl set status
+        rs.initiate()                              { replSetInitiate : null } initiates set with default settings
+        rs.initiate(cfg)                           { replSetInitiate : cfg } initiates set with configuration cfg
+        rs.conf()                                  get the current configuration object from local.system.replset
+        rs.reconfig(cfg)                           updates the configuration of a running replica set with cfg (disconnects)
+        rs.add(hostportstr)                        add a new member to the set with default attributes (disconnects)
+        rs.add(membercfgobj)                       add a new member to the set with extra attributes (disconnects)
+        rs.addArb(hostportstr)                     add a new member which is arbiterOnly:true (disconnects)
+        rs.stepDown([stepdownSecs, catchUpSecs])   step down as primary (disconnects)
+        rs.syncFrom(hostportstr)                   make a secondary sync from the given member
+        rs.freeze(secs)                            make a node ineligible to become primary for the time specified
+        rs.remove(hostportstr)                     remove a host from the replica set (disconnects)
+        rs.slaveOk()                               allow queries on secondary nodes
+
+        rs.printReplicationInfo()                  check oplog size and time range
+        rs.printSlaveReplicationInfo()             check replica set members and replication lag
+        db.isMaster()                              check who is primary
+
+        reconfiguration helpers disconnect from the database so the shell will display
+        an error, even if the command succeeds.
+
+
+
+use config
+while( sh.isBalancerRunning() ) {
+          print("waiting...");
+          sleep(1000);
+}
+
+
+поиск операций по созданию индексов
+db.currentOp(
+  {
+    $or: [
+      { op: "command", "query.createIndexes": { $exists: true } },
+      { op: "insert", ns: /\.system\.indexes\b/ }
+    ]
+  }
+)
+
+
+выключить SECONDARY с PRIMARY
+Mongo("localhost:30000").getDB("admin").shutdownServer()
+
+изменение chunk
+use config
+db.settings.save({_id:"chunksize", value:150})
+
+распределение шард по серверам
+db.example.getShardDistribution()

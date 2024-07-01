@@ -1,0 +1,1 @@
+Test-NetConnection -ComputerName 'DWH-ETL-U-01' -Port 1433

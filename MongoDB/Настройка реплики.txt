@@ -1,0 +1,55 @@
+cd C:\MongoDB
+
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --port 37018 --dbpath D:\Mongo\rs\rs1 --replSet MyReplicaSet --directoryperdb --logpath .\rs1.log
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --port 37019 --dbpath D:\Mongo\rs\rs2 --replSet MyReplicaSet --directoryperdb --logpath .\rs2.log
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --port 37020 --dbpath D:\Mongo\rs\rs3 --replSet MyReplicaSet --directoryperdb --logpath .\rs3.log
+
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --port 37021 --dbpath D:\Mongo\rs\arb --replSet MyReplicaSet --directoryperdb --logpath .\arb.log
+
+
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\rs1.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\rs2.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\rs3.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\rs4.cfg
+
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\arb.cfg
+
+
+use local
+rs.initiate()
+
+// rs.add({host:'localhost:37018'})
+rs.add({host:'10.121.9.27:37019'})
+rs.add({host:'10.121.9.27:37020'})
+rs.add({host:'10.121.9.27:37022',priority:0,buildIndexes:false})
+
+rs.addArb('10.121.9.27:37021')
+
+// rs.remove('localhost:37019')
+
+
+cfg = rs.conf()
+cfg.members[0].priority = 5
+cfg.members[1].priority = 2
+cfg.members[2].priority = 3
+rs.reconfig(cfg)
+
+
+rs.status()
+rs.conf()
+
+
+cfg = rs.conf()
+cfg.members[1].priority  = 2
+rs.reconfig(cfg)
+
+cfg = rs.conf()
+cfg.members[1].buildIndexes = false
+rs.reconfig(cfg,true)
+
+
+
+rs.remove('localhost:37019')
+
+
+C:\MongoDB\Server\4.0.7-community\bin\mongorestore --host 10.121.9.27 --port 30000 --collection audit_ParametersValuationAssets --db TestReplDb D:\Mongo\audit_ParametersValuationAssets.bson

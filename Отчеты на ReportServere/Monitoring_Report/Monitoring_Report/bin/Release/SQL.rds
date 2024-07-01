@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SQL">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=sql;Initial Catalog=TraceReport</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>bac30e2c-1e22-4a70-a4cd-395ccbab7cb5</DataSourceID>
+</RptDataSource>

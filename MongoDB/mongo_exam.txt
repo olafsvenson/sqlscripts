@@ -1,0 +1,61 @@
+https://gist.github.com/Erliz/6db84d609dadfda150c9
+https://blog.cloudthat.com/sample-questions-for-mongodb-certified-dba-c100dba-exam/
+https://www.vskills.in/certification/certified-mongodb-professional-sample-questions
+
+db.foo.update( { a : 5, b : { $lte : 7 } }, { $set : { c : 8 } }, { upsert : true } )
+
+db.test.insertOne(
+   { item: "canvas", qty: 100, tags: ["cotton"], size: { h: 28, w: 35.5, uom: "cm" } }
+)
+db.test.insertOne(
+   { item: "canvas2", qty: 100, tags: ["cotton","cotton2"], size: { h: 28, w: 35.5, uom: "cm" } }
+)
+db.test.insertOne(
+   { item: "canvas2", qty: 100, tags: ["cotton","cotton2","cotton3"], size: { h: 28, w: 35.5, uom: "cm" } }
+)
+
+
+40, 50, 60 ,80, 78, 86 
+    50, 60, 80, 78, 86 
+
+db.test.insertOne( { "_id" : 1, "scores" : [ 40, 50, 60 ] })
+
+db.test.update(
+   { _id: 1 },
+   {
+     $push: {
+       scores: {
+         $each: [ 80, 78, 86 ],
+         $slice: -5
+       }
+     }
+   }
+)
+
+db.test.find()
+
+var c = db.testData.find()
+while ( c.hasNext() ) printjson( c.next() )
+
+
+
+Here are some exercises you can complete on your own:
+
+Insert some sample data. Write a for loop that bulk inserts 1,000 documents at a time, 1000 times, for a total of 1 million documents inserted. Do it in such a way that each of its _id fields is unique.
+Perform the same operation, but use some (but not all) non-unique _id field values. See the difference between an ordered vs. unordered bulk insert.
+Perform queries on the sample set. Find documents with fields greater than certain values.
+Perform updates on the sample set. Set new fields without deleting old fields, increment fields, etc. using the update command.
+Perform array operations, pushing to and popping from arrays.
+Insert documents with nested subdocuments. Query on the subdocument fields.
+
+
+for (var i = 1; i <= 1000; i++) {
+	for (var j = 1; j <= 1000; j++) {
+ 	  db.testData.insert( { x : i, b: j, c: i+j } )
+	}
+}
+
+db.testData.find({x:{$gt:10},b:{$lt:10}}).explain()
+db.testData.createIndex({x:1,b:1,c:1})
+db.testData.createIndex({x:1,b:1,c:1},"TestIndex")
+

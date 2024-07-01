@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>LinkedServerAddSimpleAndRunTestQuery</Name>
+  <Description>Add linked server and run a test query</Description>
+  <Text>-- Create linked server reference to Database Engine instance on same machine
+EXEC master.dbo.sp_addlinkedserver @server = N'server_name_instance_name', @srvproduct=N'SQL Server'
+GO
+
+-- Use current login's security context for the link
+EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname = N'server_name_instance_name', @locallogin = NULL , @useself = N'True'
+GO
+
+-- Run a test query
+SELECT * FROM [/*server_name_instance_name*/]./*database_name*/./*schema*/./*table*/
+GO</Text>
+</Snippet>

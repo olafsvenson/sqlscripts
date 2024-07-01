@@ -1,0 +1,27 @@
+CREATE TRIGGER [CustomSettingsMaintenance_OnIndexCreate]
+ON ALL SERVER
+AFTER CREATE_INDEX
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @SchemaName SYSNAME,
+		@TableName SYSNAME,
+		@DatabaseName SYSNAME,
+		@IndexName SYSNAME;
+
+    SELECT @TableName = EVENTDATA().value('(/EVENT_INSTANCE/TargetObjectName)[1]','SYSNAME')
+    SELECT @SchemaName = EVENTDATA().value('(/EVENT_INSTANCE/SchemaName)[1]','SYSNAME')
+	SELECT @IndexName = EVENTDATA().value('(/EVENT_INSTANCE/ObjectName)[1]','SYSNAME')
+	SELECT @DatabaseName = EVENTDATA().value('(/EVENT_INSTANCE/DatabaseName)[1]','SYSNAME');
+
+	-- Здесь выполняем необходимые действия. 
+    --  Например, возможные варианты:
+    --      1. Пересоздаем индекс с учетом новой файловой группы
+    --      2. Вызываем ошибку, если реструктуризация на этой таблице
+    --      не должна проходить автоматически. В этом случае
+    --      обновление базы будет доступно после отключения глобальных триггеров,
+    --      зато не будет непредвиденных падений информационной системы.
+    --      3. Ничего не делаем, если платформенная реструктуризация работает как надо.
+
+END

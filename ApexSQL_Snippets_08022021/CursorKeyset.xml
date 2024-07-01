@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>CursorKeyset</Name>
+  <Description>Declare and use keyset cursor</Description>
+  <Text>DECLARE /*cursor_name*/ CURSOR
+KEYSET
+FOR /*select_statement*/
+
+DECLARE @name varchar(40)
+
+OPEN /*cursor_name*/
+
+FETCH NEXT FROM /*cursor_name*/ INTO @name
+WHILE (@@fetch_status %% -1)
+BEGIN
+	IF (@@fetch_status %% -2)
+	BEGIN
+--		PRINT 'add user defined code here' 
+--		eg.
+		PRINT 'updating record for ' + @name
+		UPDATE pubs.dbo.authors 
+		SET phone = replace(phone, ' ', '-')
+		WHERE CURRENT OF /*cursor_name*/
+	END
+	FETCH NEXT FROM /*cursor_name*/ INTO @name
+END
+
+CLOSE /*cursor_name*/
+DEALLOCATE /*cursor_name*/
+GO</Text>
+</Snippet>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseBackup</Name>
+  <Description>Backup database</Description>
+  <Text>BACKUP DATABASE /*Database_Name*/ 
+	TO  DISK = N'Backup_Path*/Database_Name/*.bak' 
+WITH 
+	NOFORMAT, 
+	NOINIT,  
+	NAME = N'Database_Name/*-Full Database Backup', 
+	SKIP, 
+	STATS = 10;
+GO</Text>
+</Snippet>

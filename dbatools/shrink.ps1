@@ -1,0 +1,1 @@
+﻿Invoke-DbaDbShrink -SqlInstance 1c-u-sql -AllUserDatabases -FileType Data -StepSize 25MB

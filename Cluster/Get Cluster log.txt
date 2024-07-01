@@ -1,0 +1,3 @@
+Get-ClusterLog -UseLocalTime -Destination C:\Logs
+
+The -TimeSpan 15 parameter in this step assumes that the problem that's being diagnosed occurred during the previous 15 minutes.

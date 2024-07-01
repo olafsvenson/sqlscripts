@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseRestore</Name>
+  <Description>Restore database</Description>
+  <Text>USE master
+GO
+
+RESTORE DATABASE /*Database_Name*/
+	FROM  DISK = N'Backup_Path*/Database_Name/*.bak' 
+WITH  
+	FILE = 1,  
+	NOUNLOAD,  
+	REPLACE,
+	STATS = 10
+GO</Text>
+</Snippet>

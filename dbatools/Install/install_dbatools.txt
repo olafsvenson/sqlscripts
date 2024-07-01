@@ -1,0 +1,12 @@
+https://dbatools.io/	
+
+1) download zip & unzip, rename to dbatools
+
+2) run $env:PSModulePath to find all the paths.
+
+3) copy to C:\Program Files\WindowsPowerShell\Modules.
+   download zip & unzip
+
+4) run Get-ChildItem -Recurse   "C:\Program Files\WindowsPowerShell\Modules" | Unblock-File
+
+5) import-module dbatools

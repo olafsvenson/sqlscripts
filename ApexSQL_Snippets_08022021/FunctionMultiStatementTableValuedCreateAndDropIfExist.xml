@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FunctionMultiStatementTableValuedCreateAndDropIfExist</Name>
+  <Description>Create multi-statement function (new menu), and drop previous one with the same name</Description>
+  <Text>-- ================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		/*Author*/
+-- Create date: /*Create Date*/
+-- Description:	/*Description*/
+-- =============================================
+CREATE FUNCTION /*Table_Function_Name*/ 
+(
+	-- Add the parameters for the function here
+	/*@param1*/ /*data_type_for_param1*/, 
+	/*@param2*/ /*data_type_for_param2*/
+)
+RETURNS 
+/*@Table_Variable_Name*/ TABLE 
+(
+	-- Add the column definitions for the TABLE variable here
+	/*Column_1*/ /*Data_Type_For_Column1*/, 
+	/*Column_2*/ /*Data_Type_For_Column2*/
+)
+AS
+BEGIN
+	-- Fill the table variable with the rows for your result set
+	
+	RETURN 
+END
+GO</Text>
+</Snippet>

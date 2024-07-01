@@ -1,0 +1,3 @@
+https://www.rathishkumar.in/2018/06/Solved-unable-to-start-sql-server-after-applying-service-pack-Error-Script-level-upgrade-for-database-master-failed-because-upgrade-step-ISServerupgrade-sql-encountered-error-5069-state-1-severity-16.html
+
+https://techcommunity.microsoft.com/t5/sql-server-support-blog/use-trace-flag-902-tf902-to-bring-up-your-sql-service-in-failed/ba-p/2963393

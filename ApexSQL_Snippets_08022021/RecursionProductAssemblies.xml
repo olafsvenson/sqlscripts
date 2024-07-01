@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RecursionProductAssemblies</Name>
+  <Description>Product assemblies recursion example</Description>
+  <Text>-- Uses a common table expression to selectively step through a recursive 
+-- relationship in a SELECT statement.
+-- The following example shows the hierarchy of product assemblies and 
+-- components that are required to build the bicycle for ProductAssemblyID = 800.
+
+USE /*database_name*/;
+GO
+
+WITH /*CTE_name*/(/*assembly_id*/, /*component_id*/, PerAssemblyQty, EndDate, /*level_col*/) AS
+(
+    SELECT b.ProductAssemblyID, b.ComponentID, b.PerAssemblyQty,
+        b.EndDate, 0 AS /*level_col*/
+    FROM Production.BillOfMaterials AS b
+    WHERE b.ProductAssemblyID = 800
+          AND b.EndDate IS NULL
+    UNION ALL
+    SELECT bom.ProductAssemblyID, bom.ComponentID, p.PerAssemblyQty,
+        bom.EndDate, /*level_col*/ + 1
+    FROM Production.BillOfMaterials AS bom 
+        INNER JOIN /*CTE_name*/ AS p
+        ON bom.ProductAssemblyID = p./*component_id*/
+        AND bom.EndDate IS NULL
+)
+SELECT /*assembly_id*/, /*component_id*/, Name, PerAssemblyQty, EndDate,
+        /*level_col*/ 
+FROM /*CTE_name*/ AS p
+    INNER JOIN Production.Product AS pr
+    ON p./*component_id*/ = pr.ProductID
+ORDER BY /*level_col*/, /*assembly_id*/, /*component_id*/;
+GO</Text>
+</Snippet>

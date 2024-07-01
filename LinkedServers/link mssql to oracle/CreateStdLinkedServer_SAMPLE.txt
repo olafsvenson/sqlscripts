@@ -1,0 +1,16 @@
+https://www.sqlshack.com/link-sql-server-oracle-database/
+
+EXEC [dbo].[CreateStdLinkedServer]
+    @LinkedServerName   = 'DBLNK_TEST',
+    @ServerProduct      = 'Oracle',
+    @DataSource         = 'TESTSRV',
+    @IdentityForwarding = 'FALSE',
+    @Username           = 'sdsq',
+    @Password           = 'sdqsqs',
+    @debug              = 1
+;
+
+
+-- Query for test
+ SELECT * FROM OPENQUERY([IBMBPMCL] , 'select sysdate from dual') ;
+ 

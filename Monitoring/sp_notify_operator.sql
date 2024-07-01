@@ -1,0 +1,1 @@
+EXECUTE msdb.dbo.sp_notify_operator @name=N'testOP',@body=N'Test msg'

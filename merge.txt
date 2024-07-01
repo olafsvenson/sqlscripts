@@ -1,0 +1,14 @@
+	merge into dbo.tblPresentationLimits li
+	using
+	(
+		select ToID, Count = count(*)
+			from inserted
+			where TypeID=4 AND FromID<0
+			group by ToID
+	) ii on
+		ii.ToID = li.ModifiedClientID
+	when matched then
+		update set Count += ii.Count
+	when not matched then
+		insert (ModifiedClientID, Count)
+		values (ii.ToID, ii.Count);

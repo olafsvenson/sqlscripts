@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RecursionCommonTableExpressionWithAverages</Name>
+  <Description>Common table expression with averages</Description>
+  <Text>-- Using a common table expression to limit counts and report averages
+-- The following example shows the average number of employees reporting 
+-- to managers with database.
+
+USE /*database_name*/;
+GO
+
+WITH /*CTE_name*/ (/*parent_col*/, /*count_col*/) AS 
+(
+    SELECT /*parent_col_id*/, COUNT(*) AS /*count_col*/
+    FROM /*schema*/./*table*/
+    GROUP BY /*parent_col_id*/
+) 
+SELECT AVG(/*count_col*/) AS [Average Number of Direct Reports]
+FROM /*CTE_name*/ 
+WHERE /*count_col*/ &gt;= 2 ;
+GO</Text>
+</Snippet>

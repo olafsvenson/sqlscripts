@@ -1,0 +1,5 @@
+GRANT VIEW SERVER STATE TO [RESCUE\VINT]
+
+
+
+DENY SELECT ON sys.dm_os_wait_stats TO [RESCUE\vint]

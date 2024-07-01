@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>XMLSchemaCollectionCreate</Name>
+  <Description>Create XML schema collection</Description>
+  <Text>IF EXISTS (SELECT * 
+             FROM sys.xml_schema_collections 
+            WHERE name = N'xml_schema_collection_name')
+DROP XML SCHEMA COLLECTION /*xml_schema_collection_name*/
+GO
+
+CREATE XML SCHEMA COLLECTION /*xml_schema_collection_name*/
+AS 
+'xml_schemas'
+GO</Text>
+</Snippet>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RuleBoundCreate</Name>
+  <Description>Create bound rule</Description>
+  <Text>-- This feature is marked for deprecation
+
+USE /*database_name*/
+GO
+
+-- Define the rule for use in the database
+CREATE RULE /*schema*/./*rule_name*/
+AS
+	@value &gt;= 0
+GO
+
+-- Bind the rule to a specific column in a table
+EXEC sp_bindrule 
+	'schema.rule_name',
+	'table_schema_name.table.column_name'
+GO</Text>
+</Snippet>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseCreateIfNoExist</Name>
+  <Description>Create database, and drop previous one with the same name</Description>
+  <Text>USE master
+GO
+
+-- Drop the database if it already exists
+IF  EXISTS (
+	SELECT name 
+		FROM sys.databases 
+		WHERE name = N'Database_Name'
+)
+DROP DATABASE /*Database_Name*/
+GO
+
+CREATE DATABASE /*Database_Name*/
+GO</Text>
+</Snippet>

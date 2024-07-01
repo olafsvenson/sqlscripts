@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>CursorReadOnly</Name>
+  <Description>Declare and use read_only cursor</Description>
+  <Text>DECLARE /*cursor_name*/ CURSOR
+READ_ONLY
+FOR /*select_statement*/
+
+DECLARE @name varchar(40)
+OPEN /*cursor_name*/
+
+FETCH NEXT FROM /*cursor_name*/ INTO @name
+WHILE (@@fetch_status %% -1)
+BEGIN
+	IF (@@fetch_status %% -2)
+	BEGIN
+--		PRINT 'add user defined code here'
+--		eg.
+		DECLARE @message varchar(100)
+		SELECT @message = 'my name is: ' + @name
+		PRINT @message
+	END
+	FETCH NEXT FROM /*cursor_name*/ INTO @name
+END
+
+CLOSE /*cursor_name*/
+DEALLOCATE /*cursor_name*/
+GO</Text>
+</Snippet>

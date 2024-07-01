@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ViewIndexedCreate</Name>
+  <Description>Create indexed view</Description>
+  <Text>USE /*database_name*/
+GO
+SET ANSI_NULLS, ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, QUOTED_IDENTIFIER ON
+SET NUMERIC_ROUNDABORT OFF
+
+IF object_id(N'schema.view', 'V') IS NOT NULL
+	DROP VIEW /*schema*/./*view*/
+GO
+
+CREATE VIEW /*schema*/./*view*/ 
+WITH SCHEMABINDING AS
+/*select_statement*/
+
+GO
+CREATE UNIQUE CLUSTERED INDEX /*view*/_IndexedView
+ON /*schema*/./*view*/(/*index_key_columns*/)</Text>
+</Snippet>

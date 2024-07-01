@@ -1,0 +1,18 @@
+declare curTraceID cursor read_only for
+	SELECT distinct traceID FROM ::fn_trace_getinfo(default) where traceID > 1 --returns traceIDs of all active traces, except default trace (1)
+DECLARE @TraceID int
+
+open curTraceID
+while(1=1)
+	begin
+		fetch next from curTraceID into @TraceID
+		if @@fetch_status<>0 break
+
+		print @TraceId
+		EXEC sp_trace_setstatus @TraceID, 0
+		EXEC sp_trace_setstatus @TraceID, 2
+		print 'Done'
+	end
+
+close curTraceID
+deallocate curTraceID

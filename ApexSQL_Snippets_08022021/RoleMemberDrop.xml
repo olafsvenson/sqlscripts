@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RoleMemberDrop</Name>
+  <Description>Drop role member</Description>
+  <Text>USE /*database_name*/
+GO
+
+-- Create the database role
+CREATE ROLE /*role_name*/ AUTHORIZATION [dbo]
+GO
+
+-- Grant access rights to a specific schema in the database
+GRANT 
+	ALTER, 
+	CONTROL, 
+	DELETE, 
+	EXECUTE, 
+	INSERT, 
+	REFERENCES, 
+	SELECT, 
+	TAKE OWNERSHIP, 
+	UPDATE, 
+	VIEW DEFINITION 
+ON SCHEMA::/*schema*/
+	TO /*role_name*/
+GO
+
+-- Add an existing user to the role
+EXEC sp_addrolemember N'role_name', N'user_name'
+GO
+
+-- Drop the user from the role
+EXEC sp_droprolemember N'role_name', N'user_name'</Text>
+</Snippet>

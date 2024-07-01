@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PartitionFunctionSplit</Name>
+  <Description>Alter partition function split</Description>
+  <Text>USE /*database_name*/
+GO
+
+-- Create the partition function with an original defined range
+CREATE PARTITION FUNCTION /*partition_fuction_name*/ ( /*data_type_name*/ )
+AS RANGE LEFT FOR VALUES (/*data_value1*/, /*data_value2*/, /*data_value3*/);
+GO
+
+--Split the partition between boundary_values /*data_value2*/ and /*data_value3*/
+--to create two partitions between boundary_values /*data_value2*/ and /*data_value4*/
+--and between boundary_values /*data_value4*/ and /*data_value3*/.
+ALTER PARTITION FUNCTION /*partition_fuction_name*/ ()
+SPLIT RANGE (/*data_value4*/);
+GO</Text>
+</Snippet>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ExtendedPropertyUpdate</Name>
+  <Description>Update extended property</Description>
+  <Text>EXEC sp_updateextendedproperty N'property_name', /*property_value*/, 
+			       N'level0type', N'level0name', 
+			       N'level1type', N'level1name', 
+			       N'level2type', N'level2name'
+GO</Text>
+</Snippet>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>IndexCreateFullSyntax</Name>
+  <Description>Create index full syntax</Description>
+  <Text>CREATE UNIQUE CLUSTERED INDEX /*index_name*/
+ON /*database_name*/./*owner*/./*table_or_view_name*/ 
+	(/*column_1*/ DESC, 
+	 /*column_2*/)
+WITH
+PAD_INDEX,
+FILLFACTOR = /*fillfactor_value*/,
+IGNORE_DUP_KEY,
+DROP_EXISTING,
+STATISTICS_NORECOMPUTE
+ON /*name_of_filegroup*/
+GO</Text>
+</Snippet>

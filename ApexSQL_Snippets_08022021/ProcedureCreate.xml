@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ProcedureCreate</Name>
+  <Description>Create procedure basic template</Description>
+  <Text>IF EXISTS (
+  SELECT * 
+    FROM sysobjects 
+   WHERE name = N'procedure' 
+	 AND type = 'P'
+)
+  DROP PROCEDURE /*procedure*/
+GO
+
+CREATE PROCEDURE /*procedure*/ 
+	/*@param1*/ /*datatype_for_param1*/ = /*default_value_for_param1*/, 
+	/*@param2*/ /*datatype_for_param2*/ = /*default_value_for_param2*/
+AS
+	SELECT @p1, @p2
+GO
+
+-- =============================================
+-- Example to execute the stored procedure
+-- =============================================
+EXECUTE /*procedure*/ /*value_for_param1*/, /*value_for_param2*/
+GO</Text>
+</Snippet>

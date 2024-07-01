@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FunctionTableCreate</Name>
+  <Description>Create table function</Description>
+  <Text>IF EXISTS (SELECT * 
+	   FROM   sysobjects 
+	   WHERE  name = N'table_function_name')
+	DROP FUNCTION /*table_function_name*/
+GO
+
+CREATE FUNCTION /*table_function_name*/ 
+	(/*@param1*/ /*data_type_for_param1*/, 
+	 /*@param2*/ /*data_type_for_param2*/)
+RETURNS /*@table_variable_name*/ TABLE 
+	(/*column_1*/ /*data_type_for_column1*/, 
+	 /*column_2*/ /*data_type_for_column2*/)
+AS
+BEGIN
+	INSERT /*@table_variable_name*/
+	SELECT 1, 2
+	RETURN 
+END
+GO
+
+-- =============================================
+-- Example to execute function
+-- =============================================
+SELECT * FROM /*owner*/./*table_function_name*/
+	(/*value_for_@param1*/, 
+	 /*value_for_@param2*/)
+GO</Text>
+</Snippet>

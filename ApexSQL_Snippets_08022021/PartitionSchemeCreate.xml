@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PartitionSchemeCreate</Name>
+  <Description>Create partition scheme</Description>
+  <Text>USE /*database_name*/
+GO
+
+-- Step 1. Create a partition function
+CREATE PARTITION FUNCTION /*partition_function_name*/(/*input_parameter_type*/)
+AS
+	RANGE LEFT FOR VALUES (/*data_value1*/, /*data_value2*/)
+GO
+
+-- Step 2. Create a partition scheme that references the function
+CREATE PARTITION SCHEME /*partition_scheme_name*/
+AS 
+	PARTITION /*partition_function_name*/ 
+	TO (/*file_group_1*/, /*file_group_2*/)
+GO</Text>
+</Snippet>

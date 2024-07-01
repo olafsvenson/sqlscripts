@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>IndexCreate</Name>
+  <Description>Create index basic</Description>
+  <Text>CREATE INDEX /*index_name*/
+ON /*database_name*/./*owner*/./*table_or_view_name*/ 
+	(/*column_1*/, 
+	 /*column_2*/)
+GO</Text>
+</Snippet>

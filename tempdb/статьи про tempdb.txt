@@ -1,0 +1,3 @@
+Q917047 MS SQL I/O subsystem requirements for tempdb database
+
+BOL Optimizing tempdb perfomance

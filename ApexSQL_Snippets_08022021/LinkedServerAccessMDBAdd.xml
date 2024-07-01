@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>LinkedServerAccessMDBAdd</Name>
+  <Description>Add linked server access mdb</Description>
+  <Text>EXEC sp_addlinkedserver 
+	@server = N'linked_server_name', 
+	@provider = N'Microsoft.Jet.OLEDB.4.0', 
+	@srvproduct = N'OLE DB Provider for Jet',
+	@datasrc = N'MDB_file_path'
+GO
+
+-- Set up login mapping using current user's security context
+EXEC sp_addlinkedsrvlogin 
+	@rmtsrvname = N'linked_server_name',
+	@useself = N'TRUE',
+	@locallogin = NULL, 
+	@rmtuser = N'MDB_username', 
+	@rmtpassword = /*MDB_username_password*/
+GO
+
+-- List the tables on the linked server
+EXEC sp_tables_ex N'linked_server_name'
+GO
+
+-- Select all the rows from the Customer table
+SELECT * FROM /*linked_server_name*/...Customers</Text>
+</Snippet>

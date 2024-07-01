@@ -1,0 +1,1 @@
+https://www.cybertec-postgresql.com/en/postgresql-high-availability-and-patroni-an-introduction/

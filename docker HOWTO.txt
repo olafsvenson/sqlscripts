@@ -1,0 +1,24 @@
+https://www.sqlservercentral.com/articles/docker-desktop-on-windows-10-for-sql-server-step-by-step
+
+https://octopus.com/blog/running-sql-server-developer-install-with-docker
+
+https://github.com/microsoft/mssql-docker/tree/master/windows/mssql-server-windows
+
+https://www.cathrinewilhelmsen.net/sql-server-2019-docker-container/
+
+https://www.red-gate.com/simple-talk/devops/containers-and-virtualization/provisioning-sql-server-instances-docker/
+
+https://dotsandbrackets.com/quick-intro-docker-swarm-mode-ru/
+
+https://www.digitalocean.com/community/tutorials/how-to-monitor-docker-using-zabbix-on-ubuntu-20-04
+
+https://stackoverflow.com/questions/64153361/docker-install-from-file
+
+play with docker
+https://habr.com/ru/companies/flant/articles/334470/
+https://training.play-with-docker.com/
+
+
+https://badtry.net/docker-tutorial-dlia-novichkov-rassmatrivaiem-docker-tak-iesli-by-on-byl-ighrovoi-pristavkoi/
+
+https://habr.com/ru/articles/310460/

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FunctionMultiStatementTableValuedCreate</Name>
+  <Description>Create multi-statement table-valued function</Description>
+  <Text>USE /*database_name*/
+GO
+
+IF OBJECT_ID (N'schema.function') IS NOT NULL
+   DROP FUNCTION /*schema*/./*function*/
+GO
+
+CREATE FUNCTION /*schema*/./*function*/(/*parameter1_name*/ /*parameter1_type*/)
+RETURNS /*returned_table_name*/ TABLE 
+(
+    -- columns returned by the function
+    /*returned_column1_name*/ /*datatype*/ NOT NULL,
+    /*returned_column2_name*/ /*datatype*/ NOT NULL,
+    /*returned_column3_name*/ /*datatype*/ NOT NULL,
+    /*returned_column4_name*/ /*returned_column4_datatype*/, ,int&gt; NOT NULL
+)
+AS
+-- body of the function
+BEGIN
+   WITH DirectReports(Name, Title, EmployeeID, EmployeeLevel, Sort) AS
+    (SELECT CONVERT(varchar(255), c.FirstName + ' ' + c.LastName),
+        e.Title,
+        e.EmployeeID,
+        1,
+        CONVERT(varchar(255), c.FirstName + ' ' + c.LastName)
+     FROM HumanResources.Employee AS e
+          JOIN Person.Contact AS c ON e.ContactID = c.ContactID 
+     WHERE e.EmployeeID = @InEmpID
+   UNION ALL
+     SELECT CONVERT(varchar(255), REPLICATE ('| ' , EmployeeLevel) +
+        c.FirstName + ' ' + c.LastName),
+        e.Title,
+        e.EmployeeID,
+        EmployeeLevel + 1,
+        CONVERT (varchar(255), RTRIM(Sort) + '| ' + FirstName + ' ' + 
+                 LastName)
+     FROM HumanResources.Employee as e
+          JOIN Person.Contact AS c ON e.ContactID = c.ContactID
+          JOIN DirectReports AS d ON e.ManagerID = d.EmployeeID
+    )
+   -- copy the required columns to the result of the function 
+
+   INSERT @retFindReports
+   SELECT EmployeeID, Name, Title, EmployeeLevel
+     FROM DirectReports 
+   ORDER BY Sort
+   RETURN
+END
+GO</Text>
+</Snippet>

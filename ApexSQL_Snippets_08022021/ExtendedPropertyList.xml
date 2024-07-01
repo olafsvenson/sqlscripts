@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ExtendedPropertyList</Name>
+  <Description>List extended property</Description>
+  <Text>SELECT * FROM ::fn_listextendedproperty(
+	N'property_name', 
+	N'level0type', N'level0name', 
+	N'level1type', N'level1name', 
+	N'level2type', N'level2name')
+GO</Text>
+</Snippet>

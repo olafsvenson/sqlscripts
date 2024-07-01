@@ -1,0 +1,11 @@
+# в консоли выполн€ем <путь к установщику скуль сервера>\setup.exe /qn INSTANCENAME=<название экземпл€ра сервера> REINSTALL=SQL_Engine REBUILDDATABASE=1 SAPWD=<новый пароль sa (ну, или старый ;))> SQLCOLLATION=Cyrillic_General_CI_AS 
+
+
+# в консоли выполн€ем <путь к установщику скуль сервера>\
+
+start /wait setup.exe /quiet /INSTANCENAME="mssqlserver" /REINSTALL=SQL_Engine /REBUILDDATABASE=1 /SAPWD="Pa$$w0rd" /SQLCOLLATION=Cyrillic_General_CI_AS 
+start /wait Setup.exe /QUIET  /REINSTALL=SQL_Engine /INSTANCENAME="mssqlserver"  /REBUILDDATABASE=1 /SAPWD=Pa$$w0rd /SQLCOLLATION=Cyrillic_General_CI_AS 
+
+time /t
+Setup /ACTION=REBUILDDATABASE /INSTANCENAME=mssqlserver /SQLSYSADMINACCOUNTS=WIN-84L8SNTC3TB\admin /SAPWD=Pa$$w0rd /SQLCOLLATION=Cyrillic_General_CI_AS   
+time /t

@@ -1,0 +1,72 @@
+-- 
+declare @rc int
+declare @TraceID int
+--максимальный размер отдельного файла 1 ГБ
+declare @maxfilesize bigint = 1024
+declare @now datetime = getdate()
+--время окончания установить на 00:01 следующего, чтобы не потерять данные между окончание этого трэйса и началом следующего
+declare @stopTime datetime = dateadd(mi, 1, dateadd(day, 1, convert(nvarchar(10), @now, 120)))
+--путь к папке трэйса
+declare @folder nvarchar(200) = N''D:\SQLTrace\'' + @@servicename + N''\''
+--путь к файлк трэйса
+declare @fileName nvarchar(245) = @folder + N''dailyLong '' + replace(convert(nvarchar(20), @now, 120), '':'', '''')
+select @fileName
+--включить трэйс с опцией rollover
+exec @rc = sp_trace_create @TraceID output, 2, @fileName, @maxfilesize, @stopTime
+if (@rc != 0)
+	return
+
+-- События
+declare @on bit
+set @on = 1
+exec sp_trace_setevent @TraceID, 10, 15, @on
+exec sp_trace_setevent @TraceID, 10, 8, @on
+exec sp_trace_setevent @TraceID, 10, 16, @on
+exec sp_trace_setevent @TraceID, 10, 1, @on
+exec sp_trace_setevent @TraceID, 10, 9, @on
+exec sp_trace_setevent @TraceID, 10, 17, @on
+exec sp_trace_setevent @TraceID, 10, 25, @on
+exec sp_trace_setevent @TraceID, 10, 2, @on
+exec sp_trace_setevent @TraceID, 10, 10, @on
+exec sp_trace_setevent @TraceID, 10, 18, @on
+exec sp_trace_setevent @TraceID, 10, 34, @on
+exec sp_trace_setevent @TraceID, 10, 11, @on
+exec sp_trace_setevent @TraceID, 10, 35, @on
+exec sp_trace_setevent @TraceID, 10, 12, @on
+exec sp_trace_setevent @TraceID, 10, 13, @on
+exec sp_trace_setevent @TraceID, 10, 6, @on
+exec sp_trace_setevent @TraceID, 10, 14, @on
+exec sp_trace_setevent @TraceID, 12, 15, @on
+exec sp_trace_setevent @TraceID, 12, 8, @on
+exec sp_trace_setevent @TraceID, 12, 16, @on
+exec sp_trace_setevent @TraceID, 12, 1, @on
+exec sp_trace_setevent @TraceID, 12, 9, @on
+exec sp_trace_setevent @TraceID, 12, 17, @on
+exec sp_trace_setevent @TraceID, 12, 6, @on
+exec sp_trace_setevent @TraceID, 12, 10, @on
+exec sp_trace_setevent @TraceID, 12, 14, @on
+exec sp_trace_setevent @TraceID, 12, 18, @on
+exec sp_trace_setevent @TraceID, 12, 11, @on
+exec sp_trace_setevent @TraceID, 12, 35, @on
+exec sp_trace_setevent @TraceID, 12, 12, @on
+exec sp_trace_setevent @TraceID, 12, 13, @on
+
+
+-- Настроить фильтры
+declare @intfilter int
+declare @bigintfilter bigint
+
+--исключить sp_reset_connection (TextData not like ''%sp_reset_connection%''
+exec sp_trace_setfilter @TraceID, 1, 0, 7, N''%sp_reset_connection%''
+--исключить события с пустым TextData
+exec sp_trace_setfilter @TraceID, 1, 0, 1, NULL
+
+--включить события с Duration >= 200
+set @bigintfilter = 200000
+exec sp_trace_setfilter @TraceID, 13, 0, 4, @bigintfilter
+--исключить события с пустым Duration
+set @bigintfilter = NULL
+exec sp_trace_setfilter @TraceID, 13, 0, 1, @bigintfilter
+
+-- Запустить трэйс
+exec sp_trace_setstatus @TraceID, 1

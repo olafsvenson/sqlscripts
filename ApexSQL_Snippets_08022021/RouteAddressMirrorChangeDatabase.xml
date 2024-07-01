@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RouteAddressMirrorChangeDatabase</Name>
+  <Description>Change database mirror route address</Description>
+  <Text>-- =============================================
+
+ALTER ROUTE /*route-name*/ WITH 
+     MIRROR_ADDRESS = N'mirror-address'</Text>
+</Snippet>

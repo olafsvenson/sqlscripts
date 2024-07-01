@@ -1,0 +1,12 @@
+В Windows можно шару объявить "глобальной".
+
+Persistent-storage
+В powershell (под администратором)
+выполняете
+код выделить копировать
+$creds = Get-Credential
+и вводите имя и пароль.
+имя вводил в виде Server1\ServerUser1
+затем
+код выделить копировать
+New-SmbGlobalMapping -RemotePath \\Server1\share1 -Credential $creds -LocalPath G:

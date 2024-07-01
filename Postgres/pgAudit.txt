@@ -1,0 +1,31 @@
+https://github.com/pgaudit/pgaudit
+https://severalnines.com/blog/how-to-audit-postgresql-database/
+
+
+shared_preload_libraries='pgaudit'
+pgaudit.log = 'ddl, role'
+
+After this you must start the server and add the pgaudit extension:
+
+show shared_preload_libraries;
+
+
+CREATE EXTENSION IF NOT EXISTS pgaudit;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+
+DROP EXTENSION IF EXISTS pgaudit;
+
+проверка настроек
+select name, setting, source from pg_settings where name like '%audit%';
+
+ssh -i c:\windows\system32\vzheltonogov vzheltonogov@cdi-u-01.sfn.local
+sudo systemctl restart cdi
+
+
+cd /usr/pgsql-14/share/extension/
+
+confluence
+EzQLjDQaGrQ18qkyBaXY
+
+confluence-t
+HUQhj2JwdNje0Oez0bIW

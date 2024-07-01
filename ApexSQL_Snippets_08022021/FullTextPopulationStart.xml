@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FullTextPopulationStart</Name>
+  <Description>Start full population</Description>
+  <Text>IF EXISTS(
+	SELECT * 
+	  FROM sys.fulltext_indexes
+      JOIN sys.tables
+        ON sys.tables.object_id = sys.fulltext_indexes.object_id
+	 WHERE sys.tables.name = 'table'
+)
+ALTER FULLTEXT INDEX ON /*table*/
+	START FULL POPULATION
+GO</Text>
+</Snippet>

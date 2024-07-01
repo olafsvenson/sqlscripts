@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseTriggerDrop</Name>
+  <Description>Drop database trigger</Description>
+  <Text>IF EXISTS(
+  SELECT *
+    FROM sys.triggers
+   WHERE name = N'trigger_name'
+     AND parent_class_desc = N'DATABASE'
+)
+	DROP TRIGGER /*trigger_name*/ ON DATABASE
+GO </Text>
+</Snippet>

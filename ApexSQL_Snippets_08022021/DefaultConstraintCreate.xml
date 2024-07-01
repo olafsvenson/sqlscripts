@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DefaultConstraintCreate</Name>
+  <Description>Default constraint</Description>
+  <Text>ALTER TABLE /*schema*/./*table*/
+   ADD CONSTRAINT df_/*column_name*/
+   DEFAULT /*default_expression*/
+   FOR /*column_name*/
+GO</Text>
+</Snippet>

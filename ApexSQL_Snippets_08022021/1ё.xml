@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>1с</Name>
+  <Description />
+  <Text>USE Pegasus2008MS
+go
+select * from INFORMATION_SCHEMA.VIEW_TABLE_USAGE WHERE TABLE_NAME = '%CARET%' </Text>
+</Snippet>

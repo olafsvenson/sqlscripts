@@ -1,0 +1,2 @@
+
+GRANT ALTER, EXECUTE, VIEW DEFINITION TO [PECOM\out_koretskikh.ya]

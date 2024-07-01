@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>LoginCreateForSysAdminUser</Name>
+  <Description>Create login for sysadmin user</Description>
+  <Text>CREATE LOGIN [/*domain_name*/\/*user_name*/] FROM WINDOWS WITH DEFAULT_DATABASE= /*default_database*/
+GO
+EXEC master..sp_addsrvrolemember @loginame = N'domain_name*/\/*user_name', @rolename = N'sysadmin'
+GO</Text>
+</Snippet>

@@ -1,0 +1,5 @@
+net stop MSSQLSERVER
+net start MSSQLSERVER /m
+osql -E -S .\InstanceName -Q "EXEC sp_addsrvrolemember 'DOM\User', 'sysadmin'"
+net stop MSSQLSERVER
+net start MSSQLSERVER

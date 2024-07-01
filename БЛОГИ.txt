@@ -1,0 +1,19 @@
+Andy Mallon - am2
+https://am2.co/
+https://github.com/amtwo/dba-database
+
+
+https://www.sqlskills.com/blogs/erin/author/erin/
+
+QueryStore Toolbox
+https://github.com/channeladvisor/qdstoolbox
+
+
+https://techcommunity.microsoft.com/t5/SQL-Server/bg-p/SQLServer/label-name/SQLServerTiger
+
+
+https://devblogs.microsoft.com/scripting/
+
+https://ryanjadams.com/
+
+https://seniordba.wordpress.com/

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Monitoring_Report", "Monitoring_Report\Monitoring_Report.rptproj", "{0C7874EE-AF5B-46E2-B79C-255225306451}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Debug|Default.ActiveCfg = Debug
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Debug|Default.Build.0 = DebugLocal
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Debug|Default.Deploy.0 = DebugLocal
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.DebugLocal|Default.Build.0 = DebugLocal
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Release|Default.ActiveCfg = Release
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Release|Default.Build.0 = Release
+		{0C7874EE-AF5B-46E2-B79C-255225306451}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

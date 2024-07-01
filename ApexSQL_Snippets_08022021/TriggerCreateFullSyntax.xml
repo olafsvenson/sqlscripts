@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TriggerCreateFullSyntax</Name>
+  <Description>Create T-SQL trigger (new menu)</Description>
+  <Text>-- ================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		/*Author*/
+-- Create date: /*Create Date*/
+-- Description:	/*Description*/
+-- =============================================
+CREATE TRIGGER /*schema*/./*Trigger_Name*/ 
+   ON  /*schema*/./*table*/ 
+   AFTER /*Data_Modification_Statements*/
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for trigger here
+
+END
+GO</Text>
+</Snippet>

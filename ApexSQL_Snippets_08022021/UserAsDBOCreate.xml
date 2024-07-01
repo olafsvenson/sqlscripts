@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>UserAsDBOCreate</Name>
+  <Description>Create user as dbo</Description>
+  <Text>USE /*database_name*/
+GO
+
+-- For login /*login_name*/, create a user in the database
+CREATE USER /*user_name*/
+	FOR LOGIN /*login_name*/
+	WITH DEFAULT_SCHEMA = /*default_schema*/
+GO
+
+-- Add user to the database owner role
+EXEC sp_addrolemember N'db_owner', N'user_name'
+GO</Text>
+</Snippet>

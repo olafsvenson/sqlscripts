@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>StatisticsCreate</Name>
+  <Description>Create statistics template</Description>
+  <Text>CREATE STATISTICS /*statistics_name*/ 
+ON /*table*/ 
+	(/*column_list*/)
+WITH
+SAMPLE /*percentage*/ PERCENT
+GO</Text>
+</Snippet>

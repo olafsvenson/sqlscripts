@@ -1,0 +1,47 @@
+https://techcommunity.microsoft.com/t5/sql-server-integration-services/ssis-with-alwayson/ba-p/388091
+
+Step #1: We create a table containing with a single row in a database other than SSISDB (say, X):
+
+
+
+USE master;
+CREATE TABLE [dbo].[replica_role](
+[replica_role] [tinyint] NULL
+)
+INSERT INTO [dbo].[replica_role] ([replica_role]) (
+SELECT [role]
+FROM sys.dm_hadr_availability_replica_states
+WHERE is_local = 1
+);
+
+
+Step #2: On every node, create an agent job (ex, “ssisdb_failover”) with a recurring step that runs below T-SQL script every certain amount of time (say, every 2 minutes):
+
+
+
+USE X;
+
+DECLARE @last_role TINYINT;
+SET @last_role = (
+SELECT TOP 1 [replica_role]
+FROM [dbo].[replica_role]
+);
+
+DECLARE @current_role TINYINT;
+SET @current_role = (
+SELECT ROLE
+FROM sys.dm_hadr_availability_replica_states
+WHERE is_local = 1
+);
+
+IF (@last_role = 2 AND @current_role = 1) -- Last time it was secondary,
+-- currently it is primary: need re-encrypt
+-- the database master key
+BEGIN
+USE SSISDB;
+OPEN MASTER KEY DECRYPTION BY PASSWORD = 'x' -- Should be encrypted! See below
+ALTER MASTER KEY ADD ENCRYPTION BY SERVICE MASTER KEY
+END
+
+USE X;
+UPDATE dbo.[replica_role] SET [replica_role] = @current_role;

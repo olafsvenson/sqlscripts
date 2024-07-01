@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TraceStop</Name>
+  <Description>Stop trace</Description>
+  <Text>IF EXISTS (
+	SELECT * FROM sys.fn_trace_getinfo(/*traceid*/)
+)
+BEGIN
+	-- Stops the specified trace
+	EXEC sp_trace_setstatus /*traceid*/, 0
+
+	-- Closes the specified trace and deletes its definition from the server
+	EXEC sp_trace_setstatus /*traceid*/, 2
+END
+ELSE
+	PRINT 'Traceid (/*traceid*/) does not exist'
+GO</Text>
+</Snippet>

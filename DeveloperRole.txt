@@ -1,0 +1,9 @@
+use master;
+if not exists(select principal_id from sys.server_principals where name='DeveloperRole')
+BEGIN
+	CREATE SERVER ROLE [DeveloperRole];
+	GRANT VIEW SERVER STATE TO [DeveloperRole];
+	GRANT ALTER TRACE TO [DeveloperRole];
+	GRANT VIEW ANY DATABASE TO [DeveloperRole];
+	GRANT VIEW ANY DEFINITION TO [DeveloperRole];
+END 

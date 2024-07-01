@@ -1,0 +1,1 @@
+dbcc checkdb('1C_XBRL_UKPN') with no_infomsgs, all_errormsgs

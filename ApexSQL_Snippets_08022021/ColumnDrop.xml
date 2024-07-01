@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ColumnDrop</Name>
+  <Description>Drop column</Description>
+  <Text>-- This template creates a table, then it  
+-- drops one of the columns of the table.
+--============================================
+USE /*database*/
+GO
+
+IF OBJECT_ID('schema.table', 'U') IS NOT NULL
+  DROP TABLE /*schema*/./*table*/
+GO
+
+CREATE TABLE /*schema*/./*table*/
+(
+	column1 int      NOT NULL, 
+	column2 char(10) NULL,
+	/*new_column_name*/ datetime NULL
+)
+GO
+
+-- Drop a column from the table
+ALTER TABLE /*schema*/./*table*/
+	DROP COLUMN /*new_column_name*/ 
+GO</Text>
+</Snippet>

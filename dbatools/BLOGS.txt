@@ -1,0 +1,9 @@
+https://leemarkum.com/archive/2020/12/introduction-to-powershell-for-the-dba-part-3/
+https://skatterbrainz.wordpress.com/tag/powershell/
+https://nocolumnname.blog/category/dbatools/
+
+https://bronowski.it/blog/2020/08/dbatools-io-command-line-sql-server-management-studio-alwayson-availability-groups/
+
+https://vinayrahulare.com/tag/dbatools/
+
+https://goforebroke400499988.wordpress.com/2020/05/22/sql-server-alwayson-rolling-cluster-upgrade/

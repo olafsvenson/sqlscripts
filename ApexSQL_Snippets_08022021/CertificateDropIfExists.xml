@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>CertificateDropIfExists</Name>
+  <Description>Drop certificate  </Description>
+  <Text>IF EXISTS(
+  SELECT * 
+    FROM sys.certificates 
+   WHERE name = N'certificate_name'
+)
+DROP CERTIFICATE /*certificate_name*/
+GO</Text>
+</Snippet>

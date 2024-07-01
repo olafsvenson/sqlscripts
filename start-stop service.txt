@@ -1,0 +1,2 @@
+   EXEC xp_servicecontrol N'stop',N'SQLServerAGENT'
+   EXEC xp_servicecontrol N'start',N'SQLServerAGENT'

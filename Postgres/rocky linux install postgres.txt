@@ -1,0 +1,7 @@
+https://www.atlantic.net/dedicated-server-hosting/how-to-install-postgresql-14-in-rocky-linux-8/
+https://infostart.ru/1c/articles/1705623/
+https://linuxthebest.net/yak-vstanovyty-postgresql-15-na-rocky-linux-ta-almalinux/
+https://computingforgeeks.com/install-postgresql-server-on-rocky-almalinux/
+
+
+sudo dnf install -y postgresql15

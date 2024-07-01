@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FunctionScalarValuedCreateAndDropIfExist</Name>
+  <Description>Create scalar-valued function and drop previous one if exists</Description>
+  <Text>USE /*database_name*/
+GO
+
+IF OBJECT_ID (N'schema.function') IS NOT NULL
+   DROP FUNCTION /*schema*/./*function*/
+GO
+
+CREATE FUNCTION /*schema*/./*function*/ (/*parameter1*/ /*datatype*/)
+RETURNS &lt;return_value_datatype,,float&gt;
+WITH EXECUTE AS CALLER
+AS
+-- place the body of the function here
+BEGIN
+     /*T-SQL_statment*/
+END
+GO</Text>
+</Snippet>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>EventNotificationDatabaseCreate</Name>
+  <Description>Create database event notification</Description>
+  <Text>IF EXISTS (SELECT * 
+             FROM sys.event_notifications
+            WHERE name = N'event_notification_name')
+DROP EVENT NOTIFICATION /*event_notification_name*/
+ON DATABASE
+GO
+CREATE EVENT NOTIFICATION /*event_notification_name*/
+ON DATABASE
+WITH FAN_IN
+FOR /*event_type*/
+TO SERVICE 'broker_service', /*broker_instance*/
+GO</Text>
+</Snippet>

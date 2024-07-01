@@ -1,0 +1,73 @@
+https://www.sqlhammer.com/deriks-favorite-trace-flags/
+
+Recommended defaults
+Tempdb
+Trace Flag 1118 – Allocate full extents only
+Details: Trace Flags 1117, 1118, and Tempdb Configuration | Misconceptions around TF1118
+
+Monitoring
+Trace Flag 3226 – Suppress successful backup messages in your error log
+Details: Fed up with BACKUP success messages bloating your error logs?
+
+Performance
+Trace Flag 2371 – Enable dynamic threshold for automatically updating statistics
+Details: SQL Server Trace Flag 2371 for Dynamics AX
+
+Trace Flag 4199 – Enable non-default Query Processor Enhancements
+Details: SQL Server query optimizer hotfix trace flag 4199 servicing model
+
+Trace Flag 2562 & 2549 – Performance improvements for DBCC CHECKDB
+Details: Performance improvements for the DBCC CHECKDB command | Faster DBCC CHECKDB Released in SQL 2008 R2 SP1 CU4 : Traceflag 2562 & 2549
+
+Useful
+Tempdb
+Trace Flag 1117 – Grow all files in a filegroup by their specified autogrow increment
+This is categorized under “Useful” because it takes affect on the entire SQL Server instance. While this is extremely useful for tempdb, you need to be careful about whether you want your user databases to behave in this way.
+Details: SQL Server 2008 -T 1117
+
+Monitoring
+Trace Flag 1222 – Capture deadlock graphs in your SQL Server error log
+This trace flag is still useful but I would first recommend you first investigate Retrieving Deadlock Graphs with SQL Server Extended Events.
+Details: Catching Deadlock Information in SQL Logs
+
+Performance
+Trace Flag 2389 & 2390 – Enable auto-quick-statistics update for known ascending keys and/or all columns
+Details: SQL Server statistics – traceflags 2389 & 2390 | Making the Most of Automatic Statistics Updating
+
+Trace Flag 4139 – Enable auto-quick-statistics update for stationary columns
+Details: Beyond Statistics Histogram – Part 3 (TF 2389 feat. TF 4139)
+
+Trace Flag 1224 – Prevent lock escalation, except under extreme circumstances (increased concurrency)
+Details: SQL Server Trace Flag 1224
+
+Trace Flag 3042 – Disable backup file pre-allocation algorithm to reduce disk space
+Details: How compressed is your backup? | Using Trace Flag 3042 for Backup Compression
+
+How?
+Easily enable your favorite trace flags with this start-up procedure, borrowed from msSQLgirl.
+
+USE [master]
+GO
+CREATE PROC [dbo].[EnableTraceFlags]
+-- Author : Victor Isakov
+-- Company : SQL Server Solutions (http://www.sqlserversolutions.com.au)
+-- Purpose : Enable global trace flags upon SQL Server startup.
+-- Notes : Need to execute sp_procoption to enable this stored procedure to autoexecute
+-- whenever SQL Server instance starts:
+-- EXEC sp_procoption 'dbo.EnableTraceFlags', 'startup', 'true'
+-- Bugs : None
+-- Version : 1.0
+-- History :
+-- DATE DESCRIPTION
+-- ========== ==================================================
+-- 11/04/2011 Version 1.0 released.
+AS
+DBCC TRACEON (4199, -1);
+-- Enable Query Optimiser fixes (http://support.microsoft.com/kb/974006)
+DBCC TRACEON (1222, -1);
+-- Write deadlocks to errorlog (BOL)
+DBCC TRACEON (3226, -1);
+-- Supress successfull backup messages (BOL)
+GO
+EXEC sp_procoption N'[dbo].[EnableTraceFlags]', 'startup', '1'
+GO

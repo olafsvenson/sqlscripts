@@ -1,0 +1,2 @@
+-- на сервере куда хотим подключиться
+  sp_AddRemoteLogin 'amo1\amo1','repladmin'

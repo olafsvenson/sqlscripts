@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ProcedureWithCursorOutputParameterCreate</Name>
+  <Description>Create procedure with cursor output parameter</Description>
+  <Text>-- drop stored procedure if it already exists
+IF EXISTS (
+  SELECT * 
+    FROM sysobjects 
+   WHERE name = N'procedure' 
+	 AND type = 'P'
+)
+   DROP PROCEDURE /*procedure*/
+GO
+
+-- create the specified stored procedure 
+CREATE PROCEDURE /*procedure*/ 
+	/*@proc_cursor_name*/ CURSOR VARYING OUTPUT
+AS
+   SET /*@proc_cursor_name*/ = CURSOR FOR
+       /*select_statement*/
+   OPEN /*@proc_cursor_name*/
+GO
+-- =============================================
+-- Example to execute the stored procedure
+-- =============================================
+DECLARE /*@variable_cursor_name*/ CURSOR
+
+EXEC /*procedure*/ /*@proc_cursor_name*/ = /*@variable_cursor_name*/ OUTPUT
+
+WHILE (@@FETCH_STATUS = 0)
+BEGIN
+    FETCH NEXT FROM /*@variable_cursor_name*/
+    PRINT 'put user defined code here'
+END
+
+CLOSE /*@variable_cursor_name*/
+
+DEALLOCATE /*@variable_cursor_name*/
+GO</Text>
+</Snippet>

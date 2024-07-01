@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TableExtendedPropertiesAdd</Name>
+  <Description>Add extended properties to table</Description>
+  <Text>USE /*database*/
+GO
+
+IF OBJECT_ID('schema.table', 'U') IS NOT NULL
+  DROP TABLE /*schema*/./*table*/
+GO
+
+CREATE TABLE /*schema*/./*table*/
+(
+	/*columns_in_primary_key*/ /*datatype*/ /*column1_nullability*/, 
+    CONSTRAINT /*contraint_name*/ PRIMARY KEY (/*columns_in_primary_key*/)
+)
+-- Add description to table object
+EXEC sys.sp_addextendedproperty 
+	@name=N'MS_Description', 
+	@value=N'table_description_value' ,
+	@level0type=N'SCHEMA', 
+	@level0name=N'schema', 
+	@level1type=N'TABLE', 
+	@level1name=N'table'
+GO
+
+-- Add description to a specific column
+EXEC sys.sp_addextendedproperty 
+	@name=N'MS_Description', 
+	@value=N'column_description' ,
+	@level0type=N'SCHEMA', 
+	@level0name=N'schema', 
+	@level1type=N'TABLE', 
+	@level1name=N'table', 
+	@level2type=N'COLUMN', 
+	@level2name=N'columns_in_primary_key'
+GO</Text>
+</Snippet>

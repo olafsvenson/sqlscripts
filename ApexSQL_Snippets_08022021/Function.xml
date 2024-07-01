@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Function</Name>
+  <Description>Drop/create function</Description>
+  <Text>IF object_id('object_id') IS NOT NULL
+BEGIN 
+	PRINT 'Dropping function'
+	DROP FUNCTION 
+	IF @@ERROR = 0 PRINT 'Function dropped'
+END
+go
+
+CREATE FUNCTION 
+/***********************************************************
+* Function description:
+* Date:   %DATE%  
+* Author: %OSUSER%
+*
+* Changes
+* Date		Modified By			Comments
+************************************************************
+*
+************************************************************/
+(
+	/*parameters*/
+) 
+RETURNS /*data_type*/
+BEGIN
+	DECLARE
+    	@v_ret /*data_type*/
+
+	SET @v_ret = /*expression*/
+	
+	RETURN @v_ret
+END
+</Text>
+</Snippet>

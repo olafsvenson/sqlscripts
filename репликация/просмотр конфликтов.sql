@@ -1,0 +1,1 @@
+exec sp_helpmergeconflictrows @conflict_table = N'MSmerge_conflict_MergeRBCustomerData_tblMen', @publisher = N'SQL1\SQL1', @publisher_db = N'svadba_catalog'

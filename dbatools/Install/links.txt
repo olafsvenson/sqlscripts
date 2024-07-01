@@ -1,0 +1,8 @@
+https://dbatools.io/getting-started/
+
+https://octopus.com/blog/sql-server-powershell-dbatools
+
+
+https://dbatools.io/scheduling-a-migration/
+
+https://livebook.manning.com/book/learn-dbatools-in-a-month-of-lunches/chapter-5/v-13/103

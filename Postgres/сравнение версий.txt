@@ -1,0 +1,21 @@
+https://infostart.ru/1c/articles/1806625/?ysclid=lmt5adzwc5471769635
+
+PostgreSQL 15 https://habr.com/ru/company/postgrespro/blog/679264/
+
+PostgreSQL 14 https://habr.com/ru/company/postgrespro/blog/550632/
+
+
+----------------- Взять за основу эти данные
+https://www.corpsoft24.ru/knowledge/raznitsa-mezhdu-variantami-postgresql/?ysclid=ln8s5911s8422166065
+https://postgrespro.ru/products/postgrespro?ysclid=ln8sagck2n542259623
+-----------------
+
+
+https://postgrespro.com/feature_comparison
+
+https://www.postgresql.org/docs/
+
+https://www.postgresql.org/about/news/postgresql-16-released-2715/
+https://www.postgresql.org/docs/release/16.0/
+
+lastmoddate

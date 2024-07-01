@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RecursionDirectReports</Name>
+  <Description>Direct reports recursion example</Description>
+  <Text>-- The following example shows the semantics of the recursive CTE structure by returning a 
+-- hierarchical list of employees, starting with the highest ranking employee, in the 
+-- Cycles company. The statement that executes the CTE limits the result 
+-- set to employees in the Research and Development Group. A walkthrough of the code execution 
+-- follows the example.
+
+USE /*database_name*/;
+GO
+
+WITH /*CTE_name*/ (/*parent_id_col*/, /*child_id_col*/, Title, DeptID, /*level_col*/)
+AS
+(
+-- Anchor member definition
+    SELECT e./*parent_id_col*/, e./*child_id_col*/, e.Title, edh.DepartmentID, 
+        0 AS /*level_col*/
+    FROM /*schema*/./*recursive_table*/ AS e
+    INNER JOIN /*schema*/.EmployeeDepartmentHistory AS edh
+        ON e./*child_id_col*/ = edh./*child_id_col*/ AND edh.EndDate IS NULL
+    WHERE /*parent_id_col*/ IS NULL
+    UNION ALL
+-- Recursive member definition
+    SELECT e./*parent_id_col*/, e./*child_id_col*/, e.Title, edh.DepartmentID,
+        /*level_col*/ + 1
+    FROM /*schema*/./*recursive_table*/ AS e
+    INNER JOIN /*schema*/.EmployeeDepartmentHistory AS edh
+        ON e./*child_id_col*/ = edh./*child_id_col*/ AND edh.EndDate IS NULL
+    INNER JOIN DirectReports AS d
+        ON e./*parent_id_col*/ = d./*child_id_col*/
+)
+-- Statement that executes the common table expression
+SELECT ManagerID, /*child_id_col*/, Title, /*level_col*/
+FROM /*CTE_name*/
+INNER JOIN /*schema*/.Department AS dp
+    ON /*CTE_name*/.DeptID = dp.DepartmentID
+WHERE dp.GroupName = N'Research and Development' OR /*level_col*/ = 0;
+GO</Text>
+</Snippet>

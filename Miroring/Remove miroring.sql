@@ -1,0 +1,1 @@
+ALTER DATABASE [Dss-Stable]  SET PARTNER OFF  

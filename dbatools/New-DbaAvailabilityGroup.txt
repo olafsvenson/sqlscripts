@@ -1,0 +1,91 @@
+# пример 1
+New-DbaAvailabilityGroup -Primary lk-dmart-u-01:54831 -Secondary lk-dmart-u-02:54831 -Name TestAg2 -FailoverMode Manual -Database db2 -SharedPath "\\lk-dmart-u-01\Backup" -SeedingMode Manual -Confirm:$false
+Add-DbaAgListener -SqlInstance lk-dmart-u-01:54831 -AvailabilityGroup TestAg2 -IPAddress 10.0.20.20
+
+Add-DbaAgDatabase -SqlInstance lk-dmart-p-01 -AvailabilityGroup lk-dmart-ag-p -Database lkdatamart -Secondary lk-dmart-p-02 -SeedingMode manual -SharedPath "\\lk-dmart-p-01\Backup"
+
+# пример 2
+https://bronowski.it/blog/2020/08/dbatools-io-command-line-sql-server-management-studio-alwayson-availability-groups/
+# Enable HADR / AlwaysOn 
+Enable-DbaAgHadr -SqlInstance $server
+
+# in order to apply the changes - restart the SQL service
+Restart-DbaService -ComputerName $server -Type Engine
+
+# add a new availability group
+New-DbaAvailabilityGroup -Primary $server -Name NewAG -FailoverMode External
+
+# add new replica
+Get-DbaAvailabilityGroup -SqlInstance $server -AvailabilityGroup MikeyAG | Add-DbaAgReplica -SqlInstance $server2 -FailoverMode Manual
+
+# create AG listener
+Add-DbaAgListener -SqlInstance $server -AvailabilityGroup MikeyAG -IPAddress $listener -Name AGListener
+
+# create a new database
+New-DbaDatabase -SqlInstance $server -Name NewDB4AG
+# get a full backup
+Backup-DbaDatabase -SqlInstance $server -Database NewDB4AG
+# add the database to the AG
+Add-DbaAgDatabase -SqlInstance $server -AvailabilityGroup MikeyAG -Database NewDB4AG -Secondary $server2
+
+# change the mode from Async to Sync
+Set-DbaAgReplica -SqlInstance $server -Replica $server -AvailabilityGroup MikeyAG -AvailabilityMode SynchronousCommit
+
+# by default this session is not running on my server - let's start it
+Start-DbaXESession -SqlInstance $server -Session AlwaysOn_health 
+
+
+
+
+
+# Пример 3
+# https://vinayrahulare.com/2022/04/07/create-windows-failover-cluster-and-sql-alwayson-availablity-group-using-dbatools/
+
+#Define the variables for SQLCluster
+$DomainName = 'DOMAIN'
+$DomainController = 'DC1.com'
+$Networkshare = 'FS01.com'
+$ClusterNodes = 'SQLSERVER01.com', 'SQLSERVER02.com','SQLSERVER03.com'
+$ClusterName = 'SQLSERVERCL01'
+$ClusterIP = '10.0.0.28'
+
+
+#Install Failover cluster on all the nodes
+Invoke-Command -ComputerName $ClusterNodes -ScriptBlock { Install-WindowsFeature -Name Failover-Clustering -IncludeManagementTools } | Format-Table
+
+
+#Define the variable for AlwaysOn group
+$SQLServerServiceAccount = 'svc-sql-serviceaccount'
+$Password = 'SecurePassword'
+$BackupPath = '\FS01.com.local\Temp'
+$DatabaseName = 'DB01'
+$AvailabilityGroupName = 'SQLAG01'
+$AvailabilityGroupIP = '10.0.0.19' 
+ 
+#Enable Always On on SQL instances, typically done via SQL Server Configuration Manager
+Enable-DbaAgHadr -SqlInstance $SqlInstances -Force | Format-Table
+ 
+#Setup of the endpoints
+New-DbaEndpoint -SqlInstance $SqlInstances -Name hadr_endpoint -Port 5022 | Start-DbaEndpoint | Format-Table
+New-DbaLogin -SqlInstance $SqlInstances -Login "$DomainName\$SQLServerServiceAccount" | Format-Table
+Invoke-DbaQuery -SqlInstance $SqlInstances -Query "GRANT CONNECT ON ENDPOINT::hadr_endpoint TO [$DomainName\$SQLServerServiceAccount]"
+ 
+#Transfer databases to replica
+$Database = Get-DbaDatabase -SqlInstance $SqlInstances[0] -Database $DatabaseName
+$Database | Backup-DbaDatabase -Path $BackupPath -Type Database | Restore-DbaDatabase -SqlInstance $SqlInstances[1] -NoRecovery | Out-Null
+$Database | Backup-DbaDatabase -Path $BackupPath -Type Log | Restore-DbaDatabase -SqlInstance $SqlInstances[1] -Continue -NoRecovery | Out-Null
+ 
+#Create the availability group
+$AvailabilityGroup = New-DbaAvailabilityGroup `
+        -Name $AvailabilityGroupName `
+        -Database $DatabaseName `
+        -ClusterType Wsfc `
+        -Primary $SqlInstances[0] `
+        -Secondary $SqlInstances[1] `
+        -SeedingMode Automatic `
+        -IPAddress $AvailabilityGroupIP `
+        -Confirm:$false
+$AvailabilityGroup | Format-List
+ 
+Get-DbaAgReplica -SqlInstance $SqlInstances[0] -AvailabilityGroup $AvailabilityGroupName | Format-Table
+Get-DbaAgDatabase -SqlInstance $SqlInstances -AvailabilityGroup $AvailabilityGroupName -Database $DatabaseName | Format-Table

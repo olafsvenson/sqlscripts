@@ -1,0 +1,11 @@
+db.posts.aggregate([
+    {$lookup: {"from": "comments", "localField": "_id", "foreignField": "postID", "as": "comments"}},  {$unwind : "$comments"},
+    {$lookup: {"from": "users", "localField": "comments.userID", "foreignField": "_id", "as": "comments.user"}}, 
+    {$group : { _id: "$_id", comments: {$push: "$comments"}}}
+]);
+
+2)
+db.comments.aggregate([
+    {$group: {_id: "$postID", count: { $sum: 1}}},
+    {$lookup: {"from": "posts", "localField": "_id", "foreignField": "_id", "as": "post"}},  
+]);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseTriggerCreate</Name>
+  <Description>Create database trigger</Description>
+  <Text>USE /*database_name*/
+GO
+
+IF EXISTS(
+  SELECT *
+    FROM sys.triggers
+   WHERE name = N'trigger_name'
+     AND parent_class_desc = N'DATABASE'
+)
+	DROP TRIGGER /*trigger_name*/ ON DATABASE
+GO
+
+CREATE TRIGGER /*trigger_name*/ ON DATABASE 
+	FOR /*data_definition_statements*/ 
+AS 
+IF IS_MEMBER ('db_owner') = 0
+BEGIN
+   PRINT 'You must ask your DBA to drop or alter tables!' 
+   ROLLBACK TRANSACTION
+END
+GO</Text>
+</Snippet>

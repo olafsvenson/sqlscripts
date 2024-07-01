@@ -1,0 +1,31 @@
+
+
+M201: MongoDB Performance (использовал это)
+https://github.com/aurasphere/mongodb-university-classes/tree/master/M201%20-%20MongoDB%20Performance
+
+M312: Diagnostics and Debugging (использовал это)
+https://blog.csdn.net/sunbocong/article/details/79975991
+
+https://www.codetd.com/article/623928
+
+
+
+
+
+https://github.com/zhaoyi0113/MongoDB-Training
+
+
+https://blog.csdn.net/sunbocong/article/details/80177092
+
+
+
+
+https://github.com/danielabar/mongo-performance
+
+http://tapansahu-mongodbperformance.blogspot.com/
+
+
+Все видео с курсов
+https://github.com/Bladefidz/mongodb-university
+
+C:\MongoDB\Server\4.0.7-community\bin\mongoimport.exe --host MyReplicaSet/10.121.9.27:37018,10.121.9.27:37019,10.121.9.27:37020,10.121.9.27:37022 --db m201 --collection people --file D:\Mongo\people.json

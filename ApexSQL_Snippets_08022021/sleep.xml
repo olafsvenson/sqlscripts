@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>sleep</Name>
+  <Description>get sleeping sessions count</Description>
+  <Text>select [status], [host_name], count(1) AS [count]
+from sys.dm_exec_sessions
+GROUP BY [status], [host_name]
+ORDER BY count(1) DESC</Text>
+</Snippet>

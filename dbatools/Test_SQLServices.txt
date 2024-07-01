@@ -1,0 +1,4 @@
+'sql-u-01','sql-i-01','sql-pp-01'| get-dbaservice -Type Engine, Agent | Out-GridView
+
+
+'SQLSERVER01','SQLSERVER02','SQLSERVER03'| Restart-dbaservice -Type Engine, Agent | Out-GridView

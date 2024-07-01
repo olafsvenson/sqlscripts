@@ -1,0 +1,128 @@
+   
+-- без перезапуска
+
+DBCC FREEPROCCACHE
+GO
+DBCC DROPCLEANBUFFERS
+go
+DBCC FREESYSTEMCACHE ('ALL')
+GO
+DBCC FREESESSIONCACHE
+GO
+
+USE [tempdb]
+GO
+DBCC SHRINKFILE (N'templog' , 0, TRUNCATEONLY)
+GO
+
+
+USE [tempdb]
+GO
+DBCC SHRINKFILE (N'tempdev' , 500)
+GO
+DBCC SHRINKFILE (N'temp1' , 500)
+GO
+DBCC SHRINKFILE (N'temp2' , 500)
+GO
+DBCC SHRINKFILE (N'temp3' , 500)
+GO
+DBCC SHRINKFILE (N'temp4' , 500)
+GO
+
+
+return
+USE [tempdb]
+GO
+DBCC SHRINKFILE (N'tempdev' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb2' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb3' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb4' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb5' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb6' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb7' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb7' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb8' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb9' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb10' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb11' 0, TRUNCATEONLY)
+GO
+DBCC SHRINKFILE (N'tempdb12' 0, TRUNCATEONLY)
+GO
+
+
+USE [master]
+GO
+--ALTER DATABASE [tempdb] MODIFY FILE ( NAME = N'tempdev', MAXSIZE = 20200000KB , FILEGROWTH = 256000KB )
+
+
+USE [tempdb]
+GO
+DBCC SHRINKFILE (N'templog' , 1000)
+GO
+
+
+
+USE [tempdb]
+GO
+
+DBCC SHRINKFILE (N'tempdev' ,  5000)
+GO
+
+DBCC SHRINKFILE (N'tempdev2' , 5000)
+GO
+
+DBCC SHRINKFILE (N'tempdev4' , 5000)
+GO
+
+DBCC SHRINKFILE (N'tempdev5' , 5000)
+GO
+
+DBCC SHRINKFILE (N'tempdev3' ,  5000)
+GO
+
+DBCC SHRINKFILE (N'tempdev6' , 5000)
+GO
+DBCC SHRINKFILE (N'tempdev7' , 5000)
+GO
+DBCC SHRINKFILE (N'tempdev8' , 5000)
+GO
+DBCC SHRINKFILE (N'tempdev9' , 5000)
+GO
+DBCC SHRINKFILE (N'tempdev10' , 5000)
+GO
+
+USE [tempdb]
+GO
+DBCC SHRINKFILE (N'templog' , 1000)
+GO
+USE [master]
+GO
+--ALTER DATABASE [tempdb] MODIFY FILE ( NAME = N'tempdev', MAXSIZE = 102400000KB )
+GO
+/*
+--------------------------------------   
+   
+   ALTER DATABASE tempdb MODIFY FILE
+   (NAME = 'tempdev', SIZE = размер_в_МБ) 
+   --Желаемый размер файла данных
+
+   ALTER DATABASE tempdb MODIFY FILE
+   (NAME = 'templog', SIZE = размер_в_МБ)
+   --Желаемый размер файла журнала
+
+
+-- затем перезапуск
+*/

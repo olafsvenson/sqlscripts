@@ -1,0 +1,33 @@
+https://infostart.ru/public/all/?search=postgres+replication
+https://www.server-world.info/en/note?os=CentOS_Stream_9&p=postgresql15&f=5
+https://www.cherryservers.com/blog/how-to-set-up-postgresql-database-replication
+https://www.crunchydata.com/blog/synchronous-replication-in-postgresql
+https://www.postgresql.fastware.com/postgresql-insider-ha-str-rep
+
+https://sysadminium.ru/rezervirovanie_postgresql/?ysclid=ln1wkm5bd9637965413
+
+http://renbuar.blogspot.com/2019/02/data-checksums.html
+
+
+
+https://www.postgresql.org/docs/current/continuous-archiving.html
+
+
+
+$ find /home/postgres/archives -mtime +3d -exec rm  -f {} \;
+
+
+https://habr.com/ru/articles/470383/
+
+Архивирование wal со всех нод описано на 16 стр в "5.Переключение на реплику"-"Архивация с реплики" в курсе DBA3
+https://postgrespro.ru/education/courses/DBA3
+
+
+https://www.postgresql.org/docs/current/continuous-archiving.html
+
+
+Бекапы с сжатием
+https://www.percona.com/blog/compression-of-postgresql-wal-archives-becoming-more-important/
+
+
+https://www.red-gate.com/simple-talk/databases/postgresql/postgresql-basics-a-template-for-managing-database-privileges/

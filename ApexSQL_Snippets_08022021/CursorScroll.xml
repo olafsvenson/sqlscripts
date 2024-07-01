@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>CursorScroll</Name>
+  <Description>Scroll cursor with various fetch options</Description>
+  <Text>DECLARE /*cursor_name*/ SCROLL CURSOR FOR
+/*select_statement*/
+
+OPEN /*cursor_name*/
+
+-- Fetch the first row in the cursor.
+FETCH FIRST FROM /*cursor_name*/
+
+-- Fetch the last row in the cursor.
+FETCH LAST FROM /*cursor_name*/
+
+-- Fetch the row immediately prior to the current row in the cursor.
+FETCH PRIOR FROM /*cursor_name*/
+
+-- Fetch the row immediately after the current row in the cursor.
+FETCH NEXT FROM /*cursor_name*/
+
+-- Fetch the nth row in the cursor.
+FETCH ABSOLUTE /*row_number*/ FROM /*cursor_name*/
+
+-- Fetch the row that is n rows before or after the current row.
+FETCH RELATIVE /*-/+ row_number*/ FROM /*cursor_name*/
+
+CLOSE /*cursor_name*/
+DEALLOCATE /*cursor_name*/
+GO</Text>
+</Snippet>

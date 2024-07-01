@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>IndexUniqueNonclusterdCreate</Name>
+  <Description>Create unique nonclusterd index</Description>
+  <Text>USE /*database_name*/
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX /*index_name*/ 
+ON /*schema*/./*table*/ 
+(
+	/*column_name*/ ASC
+)
+WITH 
+(
+	SORT_IN_TEMPDB = OFF, 
+	DROP_EXISTING = OFF
+) 
+ON /*file_group*/
+GO
+
+EXEC sys.sp_addextendedproperty 
+	@name=N'MS_Description', 
+	@value=N'description_index' ,
+	@level0type=N'SCHEMA', 
+	@level0name=N'schema', 
+	@level1type=N'TABLE', 
+	@level1name=N'table', 
+	@level2type=N'INDEX', 
+	@level2name=N'index_name'
+GO</Text>
+</Snippet>

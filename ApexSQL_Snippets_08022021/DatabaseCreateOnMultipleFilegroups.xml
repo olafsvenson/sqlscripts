@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseCreateOnMultipleFilegroups</Name>
+  <Description>Create database on multiple filegroups</Description>
+  <Text>IF EXISTS (
+  SELECT * 
+    FROM sys.databases 
+   WHERE name = N'database_name'
+)
+  DROP DATABASE /*database_name*/
+GO
+
+CREATE DATABASE /*database_name*/
+ON PRIMARY
+	(NAME = /*logical_filename1*/,
+	  FILENAME = N'data_filename1',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%),
+	
+	( NAME = /*logical_filename2*/,
+	  FILENAME = N'data_filename2',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%),
+
+FILEGROUP /*filegroup_1*/
+	( NAME = /*logical_filename3*/,
+	  FILENAME = N'data_filename3',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%),
+	
+	( NAME = /*logical_filename4*/,
+	  FILENAME = N'data_filename4',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%),
+
+FILEGROUP /*filegroup2*/
+	( NAME = /*logical_filename5*/,
+	  FILENAME = N'data_filename5',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%)
+
+LOG ON
+	( NAME = /*logical_log_filename1*/,
+	  FILENAME = N'log_filename1',
+          SIZE = 10MB,
+          MAXSIZE = 50MB,
+          FILEGROWTH = 10%),
+
+	( NAME = /*logical_log_filename2*/,
+	  FILENAME = N'log_filename2',
+          SIZE = 5MB,
+          MAXSIZE = 25MB,
+          FILEGROWTH = 5MB)
+GO</Text>
+</Snippet>

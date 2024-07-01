@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>tablelock</Name>
+  <Description />
+  <Text>SELECT s.name as schemaname, object_name (t.object_id) as table_name, t.lock_escalation_desc
+FROM sys.tables t, sys.schemas s
+WHERE object_name(t.object_id) IN ( '_AccumRgT48874' )
+and s.name = 'dbo' 
+and s.schema_id = t.schema_id </Text>
+</Snippet>

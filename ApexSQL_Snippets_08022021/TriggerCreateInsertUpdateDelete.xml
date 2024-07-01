@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TriggerCreateInsertUpdateDelete</Name>
+  <Description>Create trigger basic template for insert update and delete</Description>
+  <Text>IF EXISTS (SELECT name 
+	   FROM   sysobjects 
+	   WHERE  name = N'trigger_name' 
+	   AND 	  type = 'TR')
+    DROP TRIGGER /*trigger_name*/
+GO
+
+CREATE TRIGGER /*trigger_name*/
+ON /*table*/
+FOR DELETE, INSERT, UPDATE 
+AS 
+BEGIN
+	RAISERROR (50009, 16, 10)
+END
+GO</Text>
+</Snippet>

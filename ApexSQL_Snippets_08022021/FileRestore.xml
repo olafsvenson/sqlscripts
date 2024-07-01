@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FileRestore</Name>
+  <Description>Restore file and filegroups</Description>
+  <Text>-- Create database using three file groups, including PRIMARY
+CREATE DATABASE [/*database_name*/] ON 
+	PRIMARY (
+		Name= N'database_name_data', 
+		FILENAME= N'file_location_database_name_data.mdf'),
+	FILEGROUP [/*filegroup_name1*/] (
+		NAME=N'database_name_filegroup_name1', 
+		FILENAME =N'file_location_database_name_filegroup_name1.ndf'),
+	FILEGROUP [/*filegroup_name2*/] (
+		NAME=N'database_name_filegroup_name2', 
+		FILENAME =N'file_location_database_name_filegroup_name2.ndf')
+	LOG ON (
+		NAME =N'database_name_log', 
+		FILENAME =N'file_location_database_name_log.ldf');
+GO
+
+-- Backup database
+BACKUP DATABASE [/*database_name*/] 
+	FILEGROUP=N'PRIMARY',
+	FILEGROUP=N'filegroup_name1',
+	FILEGROUP=N'filegroup_name2' 
+	TO DISK = N'file_location_database_name.bak'
+
+-- Backup log
+BACKUP LOG [/*database_name*/] 
+	TO DISK = 'file_location_database_name.bak' 
+	WITH 
+		NO_TRUNCATE ,
+		NORECOVERY, 
+		NOFORMAT, 
+		NOINIT, 
+		NAME = 'database_name_backup', 
+		SKIP, 
+		NOREWIND, 
+		NOUNLOAD, 
+		STATS = 10
+
+-- Restore filegroups - one at a time
+RESTORE DATABASE [/*database_name*/] 
+	FILE = N'database_name_data' 
+	FROM DISK = N'file_location_database_name.bak' 
+	WITH  
+		FILE = 1,  
+		NORECOVERY,  
+		NOUNLOAD,  
+		STATS = 10
+GO
+
+RESTORE DATABASE [/*database_name*/] 
+	FILE = N'database_name_filegroup_name1' 
+	FROM  DISK = N'file_location_database_name.bak' 
+	WITH  
+		FILE = 1,  
+		NORECOVERY,  
+		NOUNLOAD,  
+		STATS = 10
+GO
+
+RESTORE DATABASE [/*database_name*/] 
+	FILE = N'database_name_filegroup_name2' 
+	FROM  DISK = N'file_location_database_name.bak' 
+	WITH  
+		FILE = 1,  
+		NORECOVERY,  
+		NOUNLOAD,  
+		STATS = 10
+
+-- Restore log
+RESTORE LOG [/*database_name*/] 
+	FROM DISK = N'file_location_database_name.bak' 
+	WITH  
+		FILE = 2,  
+		NOUNLOAD,  
+		STATS = 10
+GO</Text>
+</Snippet>

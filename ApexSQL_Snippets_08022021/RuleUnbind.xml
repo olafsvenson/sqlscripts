@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RuleUnbind</Name>
+  <Description>Unbind rule</Description>
+  <Text>-- This feature is marked for deprecation
+
+USE /*database_name*/
+GO
+
+-- Assumes that designated column has a bound rule
+-- Unbind the rule from the column
+EXEC sp_unbindrule
+	'table_schema_name.table.column_name'
+GO</Text>
+</Snippet>

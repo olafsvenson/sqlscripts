@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FullTextCatalogCreate</Name>
+  <Description>Create full-text catalog</Description>
+  <Text>IF EXISTS ( 
+ SELECT * 
+   FROM sys.fulltext_catalogs 
+  WHERE name = N'fulltext_catalog_name'
+)
+	DROP FULLTEXT CATALOG /*fulltext_catalog_name*/
+GO
+ 
+CREATE FULLTEXT CATALOG /*fulltext_catalog_name*/
+GO</Text>
+</Snippet>

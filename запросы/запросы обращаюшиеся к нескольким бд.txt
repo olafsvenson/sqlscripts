@@ -1,0 +1,23 @@
+with xmlnamespaces (default 'http://schemas.microsoft.com/sqlserver/2004/07/showplan'), x
+as 
+(
+select
+ cp.plan_handle,
+ o.n.value('@Database', 'sysname') as database_name,
+ ss.n.value('@StatementText', 'nvarchar(max)') as statement_text,
+ ss.n.value('@StatementId', 'int') as statement_id
+from
+ sys.dm_exec_cached_plans cp cross apply
+ sys.dm_exec_query_plan(cp.plan_handle) p cross apply
+ p.query_plan.nodes('//StmtSimple') ss(n) cross apply
+ (select ss.n.query('.')) st(x) cross apply
+ st.x.nodes('//Object') o(n)
+)
+select
+ plan_handle, statement_text, statement_id, count(distinct database_name)
+from
+ x
+group by
+ plan_handle, statement_text, statement_id
+having
+ count(distinct database_name) > 1;

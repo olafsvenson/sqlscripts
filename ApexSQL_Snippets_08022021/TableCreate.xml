@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TableCreate</Name>
+  <Description>Create table</Description>
+  <Text>USE /*database*/
+GO
+
+IF OBJECT_ID('schema.table', 'U') IS NOT NULL
+  DROP TABLE /*schema*/./*table*/
+GO
+
+CREATE TABLE /*schema*/./*table*/
+(
+	/*columns_in_primary_key*/ /*datatype*/ /*column1_nullability*/, 
+	/*column2_name*/ /*datatype2*/ /*column2_nullability*/, 
+	/*column3_name*/ /*datatype3*/ /*column3_nullability*/, 
+    CONSTRAINT /*contraint_name*/ PRIMARY KEY (/*columns_in_primary_key*/)
+)
+GO</Text>
+</Snippet>

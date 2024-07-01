@@ -1,0 +1,29 @@
+просмотр запущенных контейнеров
+docker container ls
+
+список контейнеров с их статусами
+docker container ls -a
+
+
+docker container start f118d0ff00c6
+docker container exec f118d0ff00c6 ls
+
+
+docker container diff 7236f2b3632b
+docker container commit 69d7016567f6
+
+
+список образов
+docker image ls
+
+
+
+docker image tag 55ab67846f56 ourfiglet
+
+docker image history 3de0cdd2caea
+
+
+docker image inspect --format "{{ json .RootFS.Layers }}" 97819a103f1f
+
+
+docker swarm join --token SWMTKN-1-2kupd1fwh38yu08sspz7hq2tltwfxu2ql91dzpcaw5vw8wkhh3-3r9f28vxmio1cvpcz1yvq12z7 192.168.0.13:2377

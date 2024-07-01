@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>AggregateCreate</Name>
+  <Description>Create aggregate</Description>
+  <Text>IF EXISTS(
+	SELECT * 
+      FROM sys.objects
+	 WHERE name = N'aggregate_name' 
+       AND (type = 'AF')
+)  
+	DROP AGGREGATE /*aggregate_name*/
+GO
+
+CREATE AGGREGATE /*aggregate_name*/(@/*parameter_name*/ /*parameter_type*/)
+	RETURNS /*return_type*/
+	EXTERNAL NAME /*assembly_name*/./*clr_type_name*/
+GO</Text>
+</Snippet>

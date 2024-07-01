@@ -1,0 +1,26 @@
+db.names.insert({name:"Marc", id_city: 1})
+db.names.insert({name:"George", id_city: 2})
+db.names.insert({name:"Eliot", id_city: 3})
+db.names.insert({name:"Trey", id_city: 4})
+
+
+db.city.insert({_id: 1, city: "Moscow"})
+db.city.insert({_id: 2, city: "Kaluga"})
+db.city.insert({_id: 3, city: "Tula"})
+db.city.insert({_id: 4, city: "Omsk"})
+
+db.names.aggregate([
+   {
+     $lookup:
+       {
+         from: "city",
+         localField: "id_city",
+         foreignField: "_id",
+         as: "fromcity"
+       }
+   },
+   {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$fromcity", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { fromcity: 0, _id: 0, id_city: 0 } }
+])

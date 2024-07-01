@@ -1,0 +1,26 @@
+mongod --storageEngine inMemory --dbpath C:\MongoDB\db\InMemory --inMemorySizeGB 5
+
+mongod --storageEngine wiredTiger --dbpath C:\MongoDB\db\InMemory
+
+mongod --config "C:\MongoDB\Server\4.0.7-enterprise\bin\mongo.cfg"
+
+mongod --storageEngine inMemory --inMemorySizeGB 5
+
+storage:
+   engine: inMemory
+   dbPath: <path>
+  inMemory:
+      engineConfig:
+         inMemorySizeGB: 5
+
+
+
+sc.exe create MongoDB4Ent binPath= "C:\MongoDB\Server\4.0.7-enterprise\bin\mongod.exe --config \"C:\MongoDB\Server\4.0.7-enterprise\bin\mongod.cfg\" --service"
+
+sc.exe delete MongoDB4Ent
+
+
+sc.exe create MongoDB4Ent binPath= "C:\Program Files\MongoDB\Server\4.0.7-enterprise\bin\mongod.exe --config \"C:\Program Files\MongoDB\Server\4.0.7-enterprise\bin\mongod.cfg\" --service"
+
+The memory used outside the buffer cache 
+https://jira.mongodb.org/browse/SERVER-30120

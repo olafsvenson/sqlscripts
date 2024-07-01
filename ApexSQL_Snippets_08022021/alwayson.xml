@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>alwayson</Name>
+  <Description>alwayson status</Description>
+  <Text>select  
+	db_name(database_id) AS db,
+	-- размер очереди на отправку
+	log_send_queue_size/1024/1024 as [размер очереди на отправкуGB ==&gt;],--log_send_queue_sizeGB
+	-- скорость отправки 
+	log_send_rate/1024 AS [скорость отправкиMB/s ==&gt;],--log_send_rateMB/s ==&gt;
+	-- размер лога на реплике
+	redo_queue_size/1024 AS [==&gt; размер лога на репликеMB], --  redo_queue_sizeMB
+	last_received_time as [==&gt; last_received_time],
+	-- скорость применения на реплике
+	redo_rate/1024 AS [==&gt; Скорость коммита MB/s],--redo_rateMB/s
+	last_commit_time AS [==&gt; last_commit_time],
+	-- оценочное время при текущей скоростью
+	RIGHT('0' + CAST((redo_queue_size / iif(redo_rate &gt; 0, redo_rate, 1)) / 3600 AS VARCHAR),2) + ':' +
+	RIGHT('0' + CAST((redo_queue_size / iif(redo_rate &gt; 0, redo_rate, 1)) / 60 % 60 AS VARCHAR),2) + ':' +
+	RIGHT('0' + CAST((redo_queue_size / iif(redo_rate &gt; 0, redo_rate, 1)) % 60 AS VARCHAR),2) AS [== &gt; оценочное время синхронизации &lt;==]-- est_redo_completion_time_with_current_speed
+from sys.dm_hadr_database_replica_states
+where 
+	log_send_queue_size IS NOT NULL</Text>
+</Snippet>

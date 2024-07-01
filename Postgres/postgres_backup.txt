@@ -1,0 +1,21 @@
+pg_dump -C -h 10.220.81.28 -U postgres -W jiradb > /mnt/backups/jiradb.dump
+
+# pg_dump -U zabbix -W zabbix > /tmp/zabbix.dump
+
+
+
+
+pg_restore -U postgres -W /tmp/jiradb.dump
+
+#pg_restore -d zabbix /tmp/zabbix.bak
+
+
+
+sudo -u postgres pg_dump -U postgres -W jiradb > /var/lib/pgsql/11/backups/jiradb.dump
+
+pg_dump -U postgres -W jiradb > /tmp/jiradb.dump
+sudo -u postgres pg_dump -U postgres -W jiradb > /tmp/jiradb.dump
+
+
+
+pg_dump -C -h 127.0.0.1 -U dba -W cdi > /var/lib/postgresql/16/cdi.dump

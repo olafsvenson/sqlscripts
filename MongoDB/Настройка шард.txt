@@ -1,0 +1,73 @@
+Запустить так либо через батники
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-a-a1.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-a-a2.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-a-a3-arb.cfg
+
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-b-b1.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-b-b2.cfg
+C:\MongoDB\Server\4.0.7-community\bin\mongod.exe --config C:\MongoDB\shard\shard-b-b3-arb.cfg
+
+
+Запускаем конфиг сервера
+
+...
+
+Подключаемся к a1 и добавляем узлы
+rs.initiate()
+rs.add("10.121.9.27:30001")
+rs.addArb("10.121.9.27:30002")
+
+Подключаемся к b1 и добавляем узлы
+rs.initiate()
+rs.add("10.121.9.27:30101")
+rs.addArb("10.121.9.27:30102")
+
+
+Подключаемся к config1 и добавляем узлы
+
+rs.initiate()
+rs.add("10.121.9.27:27020")
+rs.add("10.121.9.27:27021")
+
+Запускаем mongos
+
+cd C:\MongoDB\Server\4.0.7-community\bin
+mongos --configdb conf/10.121.9.27:27019,10.121.9.27:27020,10.121.9.27:27021 --logpath C:\MongoDB\shard\mongos.log --bind_ip 10.121.9.27 --port 40000
+
+Добавляем шарды
+sh.addShard("shard-a/10.121.9.27:30000,10.121.9.27:30001")
+sh.addShard("shard-b/10.121.9.27:30100,10.121.9.27:30101")
+
+Список шард
+db.getSiblingDB("config").shards.find()
+
+use admin
+db.runCommand({listshards: 1})
+
+Включаем шардирование базы
+sh.enableSharding("TestReplDb")
+
+Список шардированных баз
+db.getSiblingDB("config").databases.find()
+
+Включаем шардироавние колекции
+
+еще для этого нужен индекс
+db.testDb2.testdata2.createIndex({name: 1})
+
+шардирование колекции
+sh.shardCollection("testDb2.testdata2", {name: 1})
+
+просмотр распределения чанков
+use config
+db.chunks.count()
+db.chunks.findOne()
+use config
+db.chunks.count({"shard": "shard-a"})
+db.chunks.count({"shard": "shard-b"})
+
+
+db.printShardingStatus(true);
+
+sh.splitAt( "testDb2.testdata2", { name: "Greg" } )
+sh.moveChunk("testDb2.testdata", { name: "Greg" }, "shard-b")

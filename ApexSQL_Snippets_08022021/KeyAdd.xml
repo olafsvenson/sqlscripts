@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>KeyAdd</Name>
+  <Description>Add key</Description>
+  <Text>-- This template creates a table, then it  
+-- adds a PRIMARY KEY constraint to the table
+-- =============================================
+USE /*database*/
+GO
+
+IF OBJECT_ID('schema.table', 'U') IS NOT NULL
+  DROP TABLE /*schema*/./*table*/
+GO
+
+CREATE TABLE /*schema*/./*table*/
+(
+	/*columns_in_primary_key*/      int      NOT NULL, 
+	column2      char(8)  NOT NULL
+)
+GO
+
+-- Add a new PRIMARY KEY CONSTRAINT to the table
+ALTER TABLE /*schema*/./*table*/
+  ADD CONSTRAINT /*constraint_name*/ PRIMARY KEY (/*columns_in_primary_key*/)
+GO</Text>
+</Snippet>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>getdrives</Name>
+  <Description />
+  <Text>SET NOCOUNT ON;
+DECLARE @Temp TABLE (Drive VARCHAR(5), MB_Free DECIMAL(12, 3));
+
+INSERT INTO @Temp EXEC xp_fixeddrives;
+
+SELECT Drive,
+       CAST(MB_Free / 1024.000 AS DECIMAL(12, 3)) AS GB_Free
+FROM @Temp;</Text>
+</Snippet>

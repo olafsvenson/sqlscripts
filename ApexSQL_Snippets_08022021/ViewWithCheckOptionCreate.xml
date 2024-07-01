@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ViewWithCheckOptionCreate</Name>
+  <Description>Create view with check option</Description>
+  <Text>IF EXISTS (SELECT TABLE_NAME 
+	   FROM   INFORMATION_SCHEMA.VIEWS 
+	   WHERE  TABLE_NAME = N'view')
+    DROP VIEW /*view*/
+GO
+
+CREATE VIEW /*view*/
+AS 
+	/*select_statement*/
+WITH CHECK OPTION
+GO</Text>
+</Snippet>

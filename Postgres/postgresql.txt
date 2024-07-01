@@ -1,0 +1,122 @@
+https://gist.github.com/kyledcline/9b7e864b89c269beb2c34e55fb0903b0
+
+Нюансы работы с PostgreSQL в 3 кейсах от DBA
+https://habr.com/ru/company/southbridge/blog/574724/
+
+Настройка параметров PostgreSQL для оптимизации производительности
+https://habr.com/ru/post/458952/
+
+
+WAL в PostgreSQL: 4. Настройка журнала
+https://habr.com/ru/company/postgrespro/blog/461523/
+
+Best practices for performance tuning based on PostgreSQL 13
+https://community.microstrategy.com/s/article/Best-practices-for-performance-tuning-based-on-PostgreSQL-13?language=en_US
+
+https://severalnines.com/database-blog/architecture-and-tuning-memory-postgresql-databases#:~:text=The%20change%20requires%20restart%20of,25%25%20of%20total%20system%20memory.
+
+
+
+https://www.enterprisedb.com/postgres-tutorials/how-tune-postgresql-memory
+
+https://www.postgresql.org/docs/12/runtime-config-resource.html
+
+https://pgtune.leopard.in.ua/
+
+
+# Убить запросы
+
+select pg_cancel_backend(pid) from pg_stat_activity where state = 'idle in transactions' and datname = 'название_БД'; или
+
+может упасть postgre
+select pg_terminate_backend(pid) from pg_stat_activity where state = 'idle in transactions' and datname = 'название_БД';
+https://postgrespro.ru/docs/postgresql/13/functions-admin#FUNCTIONS-ADMIN-SIGNAL-TABLE
+
+
+# Активность 
+pg_stat_activity
+
+
+
+#Запрос  показывает кто генерит большую нагрузку на диск.
+select * from pg_statio_all_tables
+
+Анализ планов
+https://explain.tensor.ru/
+
+https://dbeaver.io/
+
+
+-- включены ли контрольные суммы для данных
+show data_checksums
+
+
+-- просмотр блокировок
+select pid, query_start, age(clock_timestamp(), query_start) as age, state, wait_event_type, wait_event, LEFT(query, 40) 
+FROM pg_stat_activity 
+WHERE backend_type = 'client backend';
+
+
+https://www.2ndquadrant.com/en/blog/autovacuum-tuning-basics/
+https://www.enterprisedb.com/postgres-tutorials/postgresql-replication-and-automatic-failover-tutorial
+
+
+
+
+
+
+
+Общий прогресс определяется отношением heap_blks_vacuumed к heap_blks_total, но нужно учитывать, что это значение изменяется не плавно, 
+а “рывками” из-за сканирования индексов. Впрочем, основное внимание надо обратить на количество циклов очистки — значение больше 1 означает, 
+что выделенной памяти не хватило для того, чтобы завершить очистку за один проход.
+
+Уменьшим размер памяти, выделенной под массив идентификаторов:
+=> ALTER SYSTEM SET maintenance_work_mem = '1MB';
+=> SELECT pg_reload_conf();
+
+Запускаем очистку и, пока она работает, обратимся несколько раз к представлению pg_stat_progress_vacuum:
+
+=> VACUUM VERBOSE vac;
+
+|  => SELECT * FROM pg_stat_progress_vacuum \gx
+|  -[ RECORD 1 ]------+------------------
+|  pid                | 6715
+|  datid              | 41493
+|  datname            | test
+|  relid              | 57383
+|  phase              | vacuuming indexes
+|  heap_blks_total    | 16667
+|  heap_blks_scanned  | 2908
+|  heap_blks_vacuumed | 0
+|  index_vacuum_count | 0
+|  max_dead_tuples    | 174762
+|  num_dead_tuples    | 174480
+
+|  => SELECT * FROM pg_stat_progress_vacuum \gx
+|  -[ RECORD 1 ]------+------------------
+|  pid                | 6715
+|  datid              | 41493
+|  datname            | test
+|  relid              | 57383
+|  phase              | vacuuming indexes
+|  heap_blks_total    | 16667
+|  heap_blks_scanned  | 5816
+|  heap_blks_vacuumed | 2907
+|  index_vacuum_count | 1
+|  max_dead_tuples    | 174762
+|  num_dead_tuples    | 174480
+
+
+Поэтому основной способ мониторинга автоочистки — параметр log_autovacuum_min_duration, который выводит информацию в журнал сообщений сервера.
+По умолчанию он выключен (установлен в -1). 
+Есть резон включить этот параметр (при значении 0 будет выводиться информация о всех запусках автоочистки) и наблюдать за цифрами.
+=> ALTER SYSTEM SET log_autovacuum_min_duration = 0;
+=> SELECT pg_reload_conf();
+
+
+
+Неожиданная находка, которая освобождает 20 GB неиспользованного индексного пространства
+https://habr.com/ru/company/otus/blog/672102/
+
+SSL 
+ SELECT * FROM pg_stat_ssl;

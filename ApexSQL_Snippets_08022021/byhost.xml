@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>byhost</Name>
+  <Description />
+  <Text>SELECT host_name, 
+       STATUS, 
+       COUNT(1)
+FROM sys.dm_exec_sessions
+GROUP BY host_name, 
+         STATUS
+ORDER BY COUNT(1) DESC;</Text>
+</Snippet>

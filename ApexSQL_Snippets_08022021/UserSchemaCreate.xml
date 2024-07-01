@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>UserSchemaCreate</Name>
+  <Description>Create schema user</Description>
+  <Text>USE /*database_name*/;
+GO
+
+-- Create a login using a Windows user
+CREATE LOGIN [/*domain_name*/\/*user_name*/] FROM WINDOWS WITH DEFAULT_DATABASE = /*database_name*/;
+
+-- Add the user to the database using their login name and the user name
+CREATE USER [/*domain_name*/\/*user_name*/]
+	FOR LOGIN [/*domain_name*/\/*user_name*/]
+	WITH DEFAULT_SCHEMA = /*default_schema*/;
+GO
+
+-- Grant specific access rights to use based on Schema
+GRANT 
+	DELETE, 
+	EXECUTE, 
+	INSERT, 
+	SELECT, 
+	UPDATE, 
+	VIEW DEFINITION 
+ON SCHEMA::[/*default_schema*/] 
+	TO [/*domain_name*/\/*user_name*/];</Text>
+</Snippet>

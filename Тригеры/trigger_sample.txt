@@ -1,0 +1,44 @@
+CREATE TRIGGER trg_TestEmployee_IUD ON TestEmployee
+AFTER INSERT, UPDATE, DELETE
+AS BEGIN
+
+DECLARE  @ID INT,
+               @Name VARCHAR(50),
+               @Department VARCHAR(50)
+
+---- Get data from inserted/ updated
+SELECT @ID= ID,
+          @Name = Name,
+          @Department = Department
+           FROM inserted
+
+ ---- Get data from deleted
+              SELECT @ID= ID,
+                     @Name = Name,
+                     @Department = Department
+                    
+              FROM deleted
+
+  -- Insert Case
+   IF EXISTS( SELECT * FROM inserted) AND NOT EXISTS (SELECT * FROM deleted) 
+    BEGIN
+             INSERT INTO TestEmployee_History(EmpID, Name, Department, ActionType)
+              Values( @ID, @Name, @Department, 'Insert')
+    END
+    
+    -- Update Case
+   IF EXISTS( SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    BEGIN
+            INSERT INTO TestEmployee_History(EmpID, Name, Department, ActionType)
+              Values( @ID, @Name, @Department, 'Update')
+    END
+      
+       -- Delete Case
+       IF EXISTS( SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
+       BEGIN
+            
+         INSERT INTO TestEmployee_History(EmpID, Name, Department, ActionType)
+           Values( @ID, @Name, @Department, 'Delete')
+
+       END
+END

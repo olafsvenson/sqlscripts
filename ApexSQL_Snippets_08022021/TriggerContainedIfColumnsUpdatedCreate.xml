@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TriggerContainedIfColumnsUpdatedCreate</Name>
+  <Description>Create trigger contained if columns_updated</Description>
+  <Text>IF EXISTS (SELECT name 
+	   FROM   sysobjects 
+	   WHERE  name = N'trigger_name' 
+	   AND 	  type = 'TR')
+    DROP TRIGGER /*trigger_name*/
+GO
+
+CREATE TRIGGER /*trigger_name*/
+ON /*table_or_view_name*/
+FOR INSERT, UPDATE 
+AS
+--eg. check if all of column 2, 3, 4 are updated
+IF (COLUMNS_UPDATED() &amp; 14) = 14
+BEGIN
+	RAISERROR ('These columns can not be updated at the same time', 16, 1)
+	ROLLBACK TRANSACTION
+END
+GO</Text>
+</Snippet>

@@ -1,0 +1,150 @@
+// Marketo tracking script
+(function marketo () {
+  var didInit = false;
+  function initMunchkin() {
+      if(didInit === false) {
+          didInit = true;
+          Munchkin.init('808-ITG-788');
+      }
+  }
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//munchkin.marketo.net/munchkin.js';
+  s.onreadystatechange = function() {
+      if (this.readyState == 'complete' || this.readyState == 'loaded') {
+          initMunchkin();
+      }
+  };
+  s.onload = initMunchkin;
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+
+// Twitter widget
+window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+ 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+ 
+  return t;
+}(document, "script", "twitter-wjs"));
+
+// INTERCOM SETTINGS.
+var intercom = (function(){
+  var spaces = [{
+    space: 'SEM',
+    intercomId: 'bd2z0tc1'
+  }];
+  
+  var checkForSpaceIntercom = function checkForSpaceIntercom () {
+    if (typeof window.Confluence.Space !== 'undefined') {
+      for (var i=0; i<spaces.length; i++) {
+        if (window.Confluence.Space.key.match(spaces[i].space) !== null) {
+          return spaces[i].intercomId;
+        }
+      }
+    }
+    return null;
+  };
+  
+  var setupIntercom = function setupIntercom (intercomId) {
+    window.intercomSettings = window.intercomSettings || {};
+    window.intercomSettings.app_id = intercomId;
+    
+	window.Honeycomb = window.Honeycomb || {};
+    window.Honeycomb.Chat = window.Honeycomb.Chat || {};
+    window.Honeycomb.Chat.Intercom = window.Honeycomb.Chat.Intercom || {};
+    if (typeof window.Honeycomb.Chat.Intercom.init !== 'undefined') {
+      window.Honeycomb.Chat.Intercom.init();
+    }
+  };
+  
+  var init = function() {
+    var spaceIntercom = checkForSpaceIntercom();
+    if (spaceIntercom) {
+      setupIntercom(spaceIntercom);
+    }
+  };
+  
+  init();  
+})();
+
+// SET AND DISPLAY PAGE VIEWS (3RD PARTY PLUGIN, VIA REST API).
+var pageView = (function () {  
+  var getPageViews = function getPageViews () {
+    window.jQuery.ajax({
+      url: window.Confluence.BaseUrl + '/rest/page-tracking-services/1.0/page-tracking/page-view-count',
+      type: 'GET',
+      data: {
+        'pageId': window.Confluence.Page.id
+      },
+      error: function (request, status, error) {
+        window.console.log('Error getting page view count: ', error);
+      },
+      success: function (data, status, request) {
+        window.console.log('Got page view count. Page viewed ' + data.v + ' times.');
+        var meta = document.querySelector('.page__metadata');
+        if (meta) {
+          var views = ", viewed " + parseInt(data.v).toLocaleString('en') + " ";
+          views += (data.v === 1) ? "time" : "times";
+          meta.innerHTML += views;
+        }
+      }
+    });
+  };
+  
+  // Not needed any more as some how the page is being tracked automatically.
+  // Doing this adds an additional count to the page view, essentially doubling
+  // the correct view count.
+  var setPageView = function setPageView () {
+    window.jQuery.ajax({
+      url: window.Confluence.BaseUrl + '/rest/page-tracking-services/1.0/page-tracking/page-view',
+      type: 'PUT',
+      data: {
+        'pageId': window.Confluence.Page.id
+      }
+    })
+  };
+  
+  var init = function init () {
+    getPageViews();
+  };
+  
+  
+  if (typeof window.jQuery !== 'undefined') init();
+})();
+
+/**
+ * Override the default functionality of the homepage search button,
+ * which is to resubmit the inline/AJAX search, and instead, submit
+ * the form, redirecting to the Redgate.com search results page.
+ */
+var searchFormSubmit = (function(){
+  var addSearchFormHandler = function addSearchFormHandler () {
+	var homepageSearchForm = document.querySelector('.home__search-form');
+    if (homepageSearchForm) {
+      var homepageSearchFormButton = homepageSearchForm.querySelector('button');
+      if (homepageSearchFormButton) {
+        homepageSearchFormButton.addEventListener('click', function(e) {
+          e.preventDefault();
+		  homepageSearchForm.submit();
+        });
+      }
+    }
+  };
+  
+  var init = function init () {
+    addSearchFormHandler();
+  };
+  
+  window.addEventListener('load', init);
+})();

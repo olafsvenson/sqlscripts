@@ -1,0 +1,27 @@
+https://desertdba.com/how-to-get-change-data-capture-to-work-in-an-availability-group/#more-674
+
+Job Step 1 – Starting Change Data Capture Collection Agent
+
+DECLARE @DatabaseName SYSNAME = DB_NAME()
+
+IF (SELECT sys.fn_hadr_is_primary_replica (@DatabaseName) ) = 1
+RAISERROR(22801, 10, -1)
+
+
+Job Step 2 – Change Data Capture Collection Agent
+
+DECLARE @DatabaseName SYSNAME = DB_NAME()
+
+IF (SELECT sys.fn_hadr_is_primary_replica (@DatabaseName) ) = 1
+EXEC sys.sp_MScdc_capture_job
+
+Job Step 1 – Change Data Capture Cleanup Agent
+DECLARE @DatabaseName SYSNAME = DB_NAME()
+
+IF (SELECT sys.fn_hadr_is_primary_replica (@DatabaseName) ) = 1
+EXEC sys.sp_MScdc_cleanup_job
+
+
++ Добавить расписание запуска раз 1 минуту
+
+Базы secondary должны быть доступны для чтения

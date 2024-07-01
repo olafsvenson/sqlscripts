@@ -1,0 +1,1 @@
+﻿Sync-DbaLoginPermission -Source sql-01-agl-p -Destination sql-pp-01 -Login 'SFN\sec_app_Pythia_L2_Support'

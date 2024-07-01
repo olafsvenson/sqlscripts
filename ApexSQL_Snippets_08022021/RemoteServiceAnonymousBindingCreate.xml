@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RemoteServiceAnonymousBindingCreate</Name>
+  <Description>Create anonymous remote service binding</Description>
+  <Text>-- =============================================
+
+CREATE REMOTE SERVICE BINDING [/*binding-name*/] 
+  TO SERVICE N'service-name'
+  WITH USER = [/*user-name*/], ANONYMOUS = ON</Text>
+</Snippet>

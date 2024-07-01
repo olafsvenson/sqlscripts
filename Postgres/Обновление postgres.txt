@@ -1,0 +1,94 @@
+1. Проинициализировать новый инстанс postgres
+
+sudo -u postgres /usr/pgsql-12/bin/pg_ctl -D /var/lib/pgsql/12/data initdb
+ 
+
+2. Остановить старый инстанс
+
+sudo /usr/bin/systemctl stop postgresql-11
+ 
+
+3. Включить peer авторизацию для пользователя postgres в старом сервере (т.к. pg_upgrade несколько раз подключается к серверу, то были проблемы с подключением, добавление ключей включающих авторизацию не помогло, поэтому так). Прописать в файл pg_hba.conf старого сервера следующие настройки. В новом сервере по умолчанию включена peer авторизация для логина postgres.
+
+sudo -u postgres nano /var/lib/pgsql/11/data/pg_hba.conf
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+# "local" is for Unix domain socket connections only
+local   all             postgres                                peer
+ 
+
+4. В конфиг нового сервера в shared_preload_libraries добавить плагин pgaudit. (Его требует pg_upgrade  на следующем шаге)
+
+sudo -u postgres nano /var/lib/pgsql/12/data/postgresql.conf
+shared_preload_libraries = 'pgaudit'
+ 
+
+5. Запустить pg_upgrade c опцией check. при наличии ошибки "pg_upgrade_internal.log": Permission denied errror сделать текущим каталогом /usr/tmp (как вариант)
+
+ 
+
+cd /usr/tmp
+sudo -u postgres /usr/pgsql-12/bin/pg_upgrade --old-bindir /usr/pgsql-11/bin --new-bindir /usr/pgsql-12/bin --old-datadir /var/lib/pgsql/11/data --new-datadir /var/lib/pgsql/12/data --check
+Performing Consistency Checks on Old Live Server
+------------------------------------------------
+Checking cluster versions                                   ok
+Checking database user is the install user                  ok
+Checking database connection settings                       ok
+Checking for prepared transactions                          ok
+Checking for system-defined composite types in user tables  ok
+Checking for reg* data types in user tables                 ok
+Checking for contrib/isn with bigint-passing mismatch       ok
+Checking for removed "abstime" data type in user tables     ok
+Checking for removed "reltime" data type in user tables     ok
+Checking for removed "tinterval" data type in user tables   ok
+Checking for tables WITH OIDS                               ok
+Checking for invalid "sql_identifier" user columns          ok
+Checking for presence of required libraries                 ok
+Checking database user is the install user                  ok
+Checking for prepared transactions                          ok
+Checking for new cluster tablespace directories             ok
+*Clusters are compatible*
+ 
+
+Если будут ошибки, то они будут показаны. Также генерятся логи.
+
+Если все OK запускаем pg_upgrade без ключа --check
+
+sudo -u postgres /usr/pgsql-12/bin/pg_upgrade --old-bindir /usr/pgsql-11/bin --new-bindir /usr/pgsql-12/bin --old-datadir /var/lib/pgsql/11/data --new-datadir /var/lib/pgsql/12/data
+Результатом работы будет копирование каталогов с данными в новый сервер и апгрейд системных метаданных. Логины и пароли переносятся.
+
+Логи и некоторые post-upgrade скрипты будут в текущем каталоге.
+
+ 
+
+6. По окончанию нужно настроить конфиг нового сервера, в том числе учитывая рекомендации от ПАО. (Как вариант скопировать со старого)
+
+sudo -u postgres nano /var/lib/pgsql/12/data/postgresql.conf
+  
+
+7. Включить checksums (операция длительная, закладывайте время)
+
+sudo -u postgres /usr/pgsql-12/bin/pg_checksums --enable -D /var/lib/pgsql/12/data
+ 
+
+8.  Отключить peer авторизацию для логина postgres и настроить pg_hba.conf согласно стандартам от ПАО
+
+sudo -u postgres nano /var/lib/pgsql/12/data/pg_hba.conf
+ 
+
+9. Запустить сервер
+
+sudo /usr/bin/systemctl start postgresql-12
+ 
+10.  Обновить статистику и сделать vacuum   
+
+ Облегченный вариант
+
+sudo -u postgres ./analyze_new_cluster.sh
+
+Полный при наличии достаточного времени на даунтайм 
+sudo -u postgres /usr/pgsql-12/bin/vacuumdb --all --full --verbose
+
+11. Обновить плагины программно. (Этот код из post-upgrade скриптов, проверяйте их наличие в текущем каталоге)
+
+ALTER EXTENSION "pg_stat_statements" UPDATE;
+ALTER EXTENSION "pgaudit" UPDATE;

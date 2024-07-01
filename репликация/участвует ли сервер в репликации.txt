@@ -1,0 +1,1 @@
+SELECT D.is_published,D.is_merge_published,D.is_subscribed,D.is_distributor FROM sys.databases AS D WHERE D.database_id = DB_ID();

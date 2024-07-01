@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TableWithComputedColumnCreate</Name>
+  <Description>Create table with computed column</Description>
+  <Text>IF EXISTS (SELECT name 
+	   FROM   sysobjects 
+	   WHERE  name = N'table' 
+	   AND 	  type = 'U')
+    DROP TABLE /*table*/
+GO
+
+CREATE TABLE /*table*/ (
+/*column_1*/ /*datatype_for_column_1*/ NOT NULL, 
+/*column_2*/ AS /*expression*/)
+GO</Text>
+</Snippet>

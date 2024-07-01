@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TriggerDrop</Name>
+  <Description>Drop trigger</Description>
+  <Text>USE /*database_name*/
+GO
+
+IF OBJECT_ID ('schema.trigger_name','TR') IS NOT NULL
+	DROP TRIGGER /*schema*/./*trigger_name*/ 
+GO</Text>
+</Snippet>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PartitionFunctionCreate</Name>
+  <Description>Create partition function</Description>
+  <Text>USE /*database_name*/
+GO
+
+CREATE PARTITION FUNCTION /*partition_fuction_name*/ ( /*data_type_name*/ )
+AS RANGE LEFT FOR VALUES (/*data_value1*/, /*data_value2*/, /*data_value3*/);
+
+-- Partition function on a partitioning column col1 would be partitioned as follows:
+-- Partition 1: col1 less than or equal to /*data_value1*/
+-- Partition 2: col1 greater than /*data_value1*/ AND col1 less than or equal to /*data_value2*/
+-- Partition 3: col1 greater than /*data_value2*/ AND col1 less than or equal to /*data_value3*/
+-- Partition 4: col1 greater than /*data_value3*/</Text>
+</Snippet>

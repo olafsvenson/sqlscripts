@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FilegroupsBackup</Name>
+  <Description>Backup filegroups</Description>
+  <Text>USE master
+GO
+
+BACKUP DATABASE /*Database_Name*/
+   FILE = N'Logical_File_Name_1',
+   FILEGROUP = N'PRIMARY',
+   FILE = N'Logical_File_Name_2', 
+   FILEGROUP = N'Filegroup_1'
+   TO /*Backup_Device_Name*/
+GO</Text>
+</Snippet>

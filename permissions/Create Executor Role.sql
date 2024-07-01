@@ -1,0 +1,8 @@
+USE [master]
+GO
+
+/* CREATE A NEW ROLE */
+CREATE ROLE db_executor
+
+/* GRANT EXECUTE TO THE ROLE */
+GRANT EXECUTE TO db_executor

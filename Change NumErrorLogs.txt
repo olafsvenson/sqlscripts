@@ -1,0 +1,10 @@
+$registrypath = "HKLM:\Software\Microsoft\MSSQLServer\MSSQLServer"
+$registryname = "NumErrorLogs"
+$registryvalue = 15
+New-ItemProperty -Path $registrypath -Name $registryname -Value $registryvalue -Force -WhatIf 
+
+
+Через dbatools
+
+
+set-dbainstanceproperty -SqlInstance "server1\sqlexpress" -InstanceProperty NumberOfLogFiles  -value 15

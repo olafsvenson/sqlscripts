@@ -1,0 +1,5 @@
+Use [master];
+GO
+
+SP_CYCLE_ERRORLOG
+GO 

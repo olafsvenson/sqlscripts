@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>SelectFrom</Name>
+  <Description>The select statement</Description>
+  <Text>SELECT %CARET%
+FROM %OBJECT%
+WHERE 
+GROUP BY 
+ORDER BY </Text>
+</Snippet>

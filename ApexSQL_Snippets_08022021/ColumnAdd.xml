@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ColumnAdd</Name>
+  <Description>Add column</Description>
+  <Text>-- This template creates a table, then it adds a new column to the table.
+USE /*database*/
+GO
+
+IF OBJECT_ID('schema.table', 'U') IS NOT NULL
+  DROP TABLE /*schema*/./*table*/
+GO
+
+CREATE TABLE /*schema*/./*table*/
+(
+	column1 int      NOT NULL, 
+	column2 char(10) NULL
+)
+GO
+
+-- Add a new column to the table
+ALTER TABLE /*schema*/./*table*/
+	ADD /*new_column_name*/ /*datatype*/ /*new_column_nullability*/
+GO</Text>
+</Snippet>

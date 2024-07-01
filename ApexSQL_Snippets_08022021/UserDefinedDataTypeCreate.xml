@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>UserDefinedDataTypeCreate</Name>
+  <Description>Create user-defined data type</Description>
+  <Text>USE /*database_name*/
+GO
+
+-- Create the data type
+CREATE TYPE /*schema*/./*type_name*/ 
+	FROM /*base_type*/ (/*precision*/) /*allow_null*/
+
+-- Create table using the data type
+CREATE TABLE /*table*/
+(
+	ID int NOT NULL,
+	Phone /*schema*/./*type_name*/ NULL
+)
+GO</Text>
+</Snippet>

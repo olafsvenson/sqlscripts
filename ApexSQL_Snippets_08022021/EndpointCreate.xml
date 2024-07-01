@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>EndpointCreate</Name>
+  <Description>Create endpoint</Description>
+  <Text>USE /*Database_Name*/
+GO
+
+---------------------------------------------------------------------------- 
+-- First create a stored procedure that will be exposed as a web service
+---------------------------------------------------------------------------- 
+IF EXISTS (
+  SELECT * 
+    FROM INFORMATION_SCHEMA.ROUTINES 
+   WHERE SPECIFIC_SCHEMA = N'schema'
+     AND SPECIFIC_NAME = N'procedure' 
+)
+   DROP PROCEDURE /*schema*/./*procedure*/
+GO
+
+CREATE PROCEDURE /*schema*/./*procedure*/
+	(@msg NVARCHAR(256))
+AS 
+	SELECT @msg AS message
+GO
+---------------------------------------------------------------------------- 
+-- Then, create the HTTP endpoint to expose hello_world_proc as a webmethod
+---------------------------------------------------------------------------- 
+IF EXISTS (
+	SELECT name from sys.http_endpoints 
+	WHERE name = N'endpoint_name'
+)
+	DROP ENDPOINT /*endpoint_name*/
+GO
+
+CREATE ENDPOINT /*endpoint_name*/
+	STATE = STARTED
+	AS HTTP (
+		path='/sql/hello_world',
+		AUTHENTICATION=(INTEGRATED),
+		PORTS = (CLEAR)
+	)
+	FOR SOAP(
+		WEBMETHOD 'http://tempuri.org/' . '&lt;Procedure_Name, SYSNAME, Procedure_Name&gt;' (NAME = 'Database_Name.&lt;Schema_Name, SYSNAME, Schema_Name&gt;.procedure' ),
+		WSDL = DEFAULT,
+		BATCHES=ENABLED
+	)
+GO</Text>
+</Snippet>

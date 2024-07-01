@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseAttach</Name>
+  <Description>Attach database</Description>
+  <Text>IF NOT EXISTS(
+  SELECT *
+    FROM sys.databases
+   WHERE name = N'database_name'
+)
+	CREATE DATABASE /*database_name*/
+		ON PRIMARY (FILENAME = 'database_primary_file_path')
+		FOR ATTACH
+GO</Text>
+</Snippet>

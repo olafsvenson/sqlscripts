@@ -1,0 +1,39 @@
+В первую очередь, необходимо получить список фрагментированных индексов, отсеяв при этом таблицы без первичного ключа (кучи):
+
+SELECT
+      [object_name] = SCHEMA_NAME(o.[schema_id]) + '.' + o.name
+    , [object_type] = o.type_desc
+    , index_name = i.name
+    , index_type = i.type_desc
+    , s.avg_fragmentation_in_percent
+    , s.page_count
+FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'DETAILED') s
+JOIN sys.indexes i ON s.[object_id] = i.[object_id] AND s.index_id = i.index_id
+JOIN sys.objects o ON o.[object_id] = s.[object_id]
+WHERE s.index_id > 0 -- исключая кучи
+    AND avg_fragmentation_in_percent > 0
+
+
+
+После этого мы сформируем динамический запрос, который, в зависимости от степени фрагментации, будет перестраивать либо реорганизовывать индексы:
+
+DECLARE @SQL NVARCHAR(MAX)
+SELECT @SQL = (
+    SELECT
+    'ALTER INDEX [' + i.name + N'] ON [' + SCHEMA_NAME(o.[schema_id]) + '].[' + o.name + '] ' +
+    CASE WHEN s.avg_fragmentation_in_percent > 50
+        THEN 'REBUILD WITH (SORT_IN_TEMPDB = ON'
+         + CASE WHEN SERVERPROPERTY('Edition') IN ('Enterprise Edition', 'Developer Edition')
+             THEN ', ONLINE = ON' ELSE '' END + ')'
+        ELSE 'REORGANIZE'
+    END + ';
+    RAISERROR(''Processing ' + i.name + '...'', 0, 1) WITH NOWAIT;'
+    FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'DETAILED') s
+    JOIN sys.indexes i ON s.[object_id] = i.[object_id] AND s.index_id = i.index_id
+    JOIN sys.objects o ON o.[object_id] = s.[object_id]
+    WHERE s.index_id > 0
+        AND page_count > 100
+        AND avg_fragmentation_in_percent > 10
+    FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)')
+
+EXEC sys.sp_executesql @SQL

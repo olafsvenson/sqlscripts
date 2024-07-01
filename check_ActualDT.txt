@@ -1,0 +1,3 @@
+declare @cmd1 nvarchar(300)= 'IF (''?'' NOT IN (''tempdb'',''master'', ''msdb'', ''model'',''SpotlightPlaybackDatabase'',''tmpDB'')) select  ''[?]'',[DT]  FROM [?].[dbo].[ActualDT]'
+
+exec sp_MSForEachDb @cmd1

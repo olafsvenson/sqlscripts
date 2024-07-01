@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>lock</Name>
+  <Description />
+  <Text>SELECT *
+FROM [sputnik].[guest].[beta_lockinfo] l with(nolock)
+WHERE [now] BETWEEN DATEADD(mi, -30, GETDATE()) AND GETDATE()
+--AND spid = ''
+AND  l.rsctype='OBJECT' AND locktype ='X'
+AND object NOT LIKE '#%'
+ORDER BY rowno DESC;
+
+
+SELECT l.[object], l.rsctype, l.locktype, l.rscsubtype, count(1) AS 'count'
+FROM [sputnik].[guest].[beta_lockinfo] l with(nolock)
+WHERE [now] BETWEEN DATEADD(mi, -30, GETDATE()) AND GETDATE()
+--AND spid = ''
+AND  l.rsctype='OBJECT' AND locktype ='X'
+AND [object] NOT LIKE '#%' 
+GROUP BY l.[object], l.rsctype, l.locktype, l.rscsubtype
+ORDER BY count(1) DESC;
+</Text>
+</Snippet>

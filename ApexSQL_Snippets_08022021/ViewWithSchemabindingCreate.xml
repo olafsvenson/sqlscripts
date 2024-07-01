@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ViewWithSchemabindingCreate</Name>
+  <Description>Create view with schemabinding</Description>
+  <Text>IF EXISTS (SELECT TABLE_NAME 
+	   FROM   INFORMATION_SCHEMA.VIEWS 
+	   WHERE  TABLE_NAME = N'view')
+    DROP VIEW /*view*/
+GO
+
+CREATE VIEW /*view*/ WITH SCHEMABINDING
+AS 
+/*select_statement*/
+--note: need to specify specific column names and owner of the table 
+--eg. SELECT column_1, column_2 FROM owner.table_or_view_name WHERE search_condition
+GO</Text>
+</Snippet>

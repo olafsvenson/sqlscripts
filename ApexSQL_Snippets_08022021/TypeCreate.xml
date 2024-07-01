@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TypeCreate</Name>
+  <Description>Create type</Description>
+  <Text>USE /*database_name*/;
+GO
+
+-- Create the assembly reference that contains the type definition
+CREATE ASSEMBLY /*assembly_name*/
+FROM 'assembly_path*/, ,\\ComputerName\utf8string\utf8string.dll&gt;' ;
+GO
+
+-- Create the new data type
+CREATE TYPE /*type_name*/
+EXTERNAL NAME /*assembly_name*/./*class_name*/;
+GO
+ 
+-- Create a table that uses the data type
+CREATE TABLE /*schema*/./*table*/
+(
+	/*columns_in_primary_key*/ /*datatype*/ /*column1_nullability*/, 
+	/*column2_name*/ /*type_name*/
+)
+GO</Text>
+</Snippet>

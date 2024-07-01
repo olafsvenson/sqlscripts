@@ -1,0 +1,1 @@
+select * from msdb.dbo.log_shipping_monitor_secondary

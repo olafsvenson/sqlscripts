@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FullTextIndexCreate</Name>
+  <Description>Create full-text index</Description>
+  <Text>-- This template assumes there is already a 
+-- full-text catalog in your database
+-- =============================================
+IF EXISTS(
+	SELECT * 
+	  FROM sys.fulltext_indexes
+      JOIN sys.tables
+        ON sys.tables.object_id = sys.fulltext_indexes.object_id
+	 WHERE sys.tables.name = 'table'
+)
+  DROP FULLTEXT INDEX ON /*table*/
+GO
+
+CREATE FULLTEXT INDEX ON /*table*/ (/*column_name*/) 
+	KEY INDEX /*full_text_index_name*/
+	ON /*full_text_catalog_name*/
+	WITH CHANGE_TRACKING AUTO
+GO</Text>
+</Snippet>

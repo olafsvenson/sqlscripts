@@ -1,0 +1,4 @@
+USE [Your database]
+GO
+ALTER AUTHORIZATION ON SCHEMA::[dbo] TO [Another login]
+GO

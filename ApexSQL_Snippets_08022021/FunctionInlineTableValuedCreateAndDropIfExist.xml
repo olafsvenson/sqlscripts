@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>FunctionInlineTableValuedCreateAndDropIfExist</Name>
+  <Description>Create inline table-values function and drop previous one with the same name</Description>
+  <Text>USE /*database_name*/
+GO
+
+IF OBJECT_ID (N'schema.function') IS NOT NULL
+    DROP FUNCTION /*schema*/./*function*/
+GO
+
+CREATE FUNCTION /*schema*/./*function*/(/*parameter1_name*/ /*parameter1_type*/)
+RETURNS TABLE
+AS RETURN
+(
+	/*T-SQL_for_function_body*/
+)
+GO</Text>
+</Snippet>

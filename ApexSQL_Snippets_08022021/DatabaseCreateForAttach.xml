@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseCreateForAttach</Name>
+  <Description>Create database for attach</Description>
+  <Text>IF EXISTS (SELECT * 
+	   FROM   master..sysdatabases 
+	   WHERE  name = N'database_name')
+	DROP DATABASE /*database_name*/
+GO
+
+CREATE DATABASE /*database_name*/
+ON PRIMARY 
+	(FILENAME = N'os_file_name')
+FOR ATTACH
+GO</Text>
+</Snippet>

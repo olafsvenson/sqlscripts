@@ -1,0 +1,2 @@
+https://github.com/ktaranov/sqlserver-kit/tree/master/Extended_Events
+https://www.scarydba.com/2022/07/05/extended-events-for-anything-but-query-tuning-unique-constraint-violations/

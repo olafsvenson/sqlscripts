@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TableDrop</Name>
+  <Description>Drop table</Description>
+  <Text>IF EXISTS (
+  SELECT *
+	FROM sys.tables
+	JOIN sys.schemas
+	  ON sys.tables.schema_id = sys.schemas.schema_id
+   WHERE sys.schemas.name = N'schema'
+	 AND sys.tables.name = N'table'
+)
+  DROP TABLE /*schema*/./*table*/
+GO</Text>
+</Snippet>

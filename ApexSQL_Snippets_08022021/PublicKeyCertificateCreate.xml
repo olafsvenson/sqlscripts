@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PublicKeyCertificateCreate</Name>
+  <Description>Create public key certificate</Description>
+  <Text>CREATE CERTIFICATE /*certificate_name*/
+   AUTHORIZATION /*user-name*/ 
+   FROM  FILE = 'path_to_certificate'</Text>
+</Snippet>

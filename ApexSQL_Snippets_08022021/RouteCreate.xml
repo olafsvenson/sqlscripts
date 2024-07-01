@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>RouteCreate</Name>
+  <Description>Create route</Description>
+  <Text>CREATE ROUTE /*route_name*/ 
+WITH 
+     SERVICE_NAME = N'service-name',
+     BROKER_INSTANCE = 
+	N'broker-instance' , 
+     ADDRESS = N'next-hop-address'</Text>
+</Snippet>

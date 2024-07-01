@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>DatabaseAttachSP</Name>
+  <Description>Attach single file database using stored procedure</Description>
+  <Text>-- note: it builds a new log file and performs additional cleanup work 
+-- 	 to remove replication from the newly attached database
+EXECUTE sp_attach_single_file_db @dbname   = N'database_name', 
+   		     		 @physname = N'physname'
+GO</Text>
+</Snippet>

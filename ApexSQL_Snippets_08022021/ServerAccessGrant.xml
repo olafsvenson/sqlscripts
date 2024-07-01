@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ServerAccessGrant</Name>
+  <Description>Grant SQL server access</Description>
+  <Text>sp_grantlogin @loginame = N'Windows_user_or_group'
+GO</Text>
+</Snippet>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>compress</Name>
+  <Description>поиск таблиц для сжатия</Description>
+  <Text>SELECT s.name AS SchemaName, 
+       OBJECT_NAME(o.OBJECT_ID) AS TableName, 
+       ISNULL(i.name, 'HEAP') AS IndexName,
+       CASE i.[type]
+           WHEN 0 THEN 'HEAP'
+           WHEN 1 THEN 'Clustered'
+           WHEN 2 THEN 'NonClustered'
+           WHEN 3 THEN 'XML'
+           WHEN 4 THEN 'Spatial'
+       END AS IndexType,
+       CASE
+           WHEN i.data_space_id &gt; 65600
+           THEN ps.name
+           ELSE f.name
+       END AS FG_or_PartitionName, 
+       p.[rows] AS [RowCnt], 
+       p.data_compression_desc AS CompressionType, 
+       au.type_desc AS AllocType, 
+       au.total_pages / 128 AS TotalMBs, 
+       au.used_pages / 128 AS UsedMBs, 
+       au.data_pages / 128 AS DataMBs,
+	   'ALTER INDEX '+quotename(i.name)+' on '+ quotename(OBJECT_NAME(o.OBJECT_ID))+' REBUILD WITH (DATA_COMPRESSION = PAGE,SORT_IN_TEMPDB=ON, ONLINE=ON )' AS [compress_sql]
+FROM sys.indexes i
+     LEFT OUTER JOIN sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
+     LEFT OUTER JOIN sys.filegroups f ON i.data_space_id = f.data_space_id
+     INNER JOIN sys.objects o ON i.object_id = o.object_id
+     INNER JOIN sys.partitions p ON i.object_id = p.object_id
+                                    AND i.index_id = p.index_id
+     INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+     INNER JOIN sys.allocation_units au ON CASE
+                                               WHEN au.[type] IN(1, 3) THEN p.hobt_id
+                                               WHEN au.[type] = 2 THEN p.partition_id
+                                           END = au.container_id
+WHERE o.is_ms_shipped &lt;&gt; 1
+     -- AND OBJECT_NAME(o.object_id) = '_Document575'
+	 and p.[rows] BETWEEN 10000000 AND 15000000
+	 -- nonclustered
+	 AND i.[type]=2
+	 -- без компрессии
+	 AND p.data_compression_desc = 'NONE'
+ORDER BY TotalMBs DESC;</Text>
+</Snippet>

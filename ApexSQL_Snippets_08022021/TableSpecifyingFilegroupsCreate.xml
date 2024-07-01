@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Snippet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TableSpecifyingFilegroupsCreate</Name>
+  <Description>Create table specifying filegroups</Description>
+  <Text>IF EXISTS (SELECT name 
+	   FROM   sysobjects 
+	   WHERE  name = N'table' 
+	   AND 	  type = 'U')
+    DROP TABLE /*table*/
+GO
+
+CREATE TABLE /*table*/ (
+/*column_1*/ /*datatype_for_column_1*/ NOT NULL, 
+/*column_2*/ /*datatype_for_column_2*/ )
+ON /*file_group_name_1*/
+TEXTIMAGE_ON /*file_group_name_2*/
+GO</Text>
+</Snippet>

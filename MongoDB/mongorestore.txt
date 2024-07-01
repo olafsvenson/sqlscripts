@@ -1,0 +1,1 @@
+mongorestore --host localhost --port 27018 --collection audit_ParametersValuationAssets --db Test2 d:\temp\audit_ParametersValuationAssets.bson

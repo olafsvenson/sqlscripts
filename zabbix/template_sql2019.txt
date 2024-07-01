@@ -1,0 +1,1 @@
+https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/db/mssql_odbc?at=release/5.4
